@@ -8,7 +8,7 @@
 
 ### Description
 
-Description goes here
+Windows GUI for extracting Synology DSM pat files
 
 ### Download the script
 
