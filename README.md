@@ -12,8 +12,8 @@ Windows GUI for extracting Synology DSM pat files
 
 ### Download the script
 
-1. Download the latest version _Source code (zip)_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
-2. Save the download zip file to a folder on the Synology.
+1. Download the latest version _Syno_DSM_Extractor_GUI_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
 
 ### To run the script via task scheduler
