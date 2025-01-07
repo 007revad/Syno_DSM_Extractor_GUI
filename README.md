@@ -14,8 +14,9 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 
 ### Requirements
 
-1. Windows 10 version 2004 and higher (Build 19041 and higher) or Windows 11 running on either a physical device or virtual machine.
-2. Windows System for Linux (WSL) installed with Ubuntu.
+1. Computer with a x86_64 CPU.
+2. Windows 11 or Windows 10 version 2004 and higher (Build 19041 and higher) running on either a physical device or virtual machine.
+3. Windows System for Linux (WSL) installed with Ubuntu.
 
 ### Installing WSL and Ubuntu
 
