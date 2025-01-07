@@ -17,6 +17,7 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 1. Computer with a x86_64 CPU.
 2. Windows 11 or Windows 10 version 2004 and higher (Build 19041 and higher) running on either a physical device or virtual machine.
 3. Windows System for Linux (WSL) installed with Ubuntu.
+4. A copy of wsl.exe be in the same folder as SDE-GUI.exe
 
 ### Installing WSL and Ubuntu
 
@@ -33,6 +34,7 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
+4. Copy `C:\Windows\System32\wsl.exe` into the Syno_DSM_Extractor_GUI folder.
 
 ### Screenshots
 
