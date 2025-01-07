@@ -6,7 +6,7 @@
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/007revad)
 [![committers.top badge](https://user-badge.committers.top/australia/007revad.svg)](https://user-badge.committers.top/australia/007revad)
 
-This program is provided only for the purpose of recovering or repairing Synology NAS or for research.
+This program is provided only for the purpose of recovering or repairing Synology NAS or for personal research.
 
 ### Description
 
