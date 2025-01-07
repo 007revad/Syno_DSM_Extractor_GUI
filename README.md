@@ -10,6 +10,18 @@
 
 Windows GUI for extracting Synology DSM pat files
 
+This is a Windows GUI for the bash and python scripts here [Synology_Archive_Extractor](https://github.com/007revad/Synology_Archive_Extractor)
+
+### Requirements
+
+1. Windows 10 or 11 running on either a physical device or virtual machine.
+2. Windows System for Linux (WSL) installed with Ubuntu.
+    - In Windows Powershell type the following to install WSL and the default Ubuntu from Windows Store: 
+    ```
+    wsl --install
+    ```
+    - You may need to reboot after it's installed.
+
 ### Download the script
 
 1. Download the latest version _Syno_DSM_Extractor_GUI_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
