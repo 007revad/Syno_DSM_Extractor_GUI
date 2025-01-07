@@ -27,40 +27,11 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
     This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
 3. Then reboot.
 
-### Download the script
+### Download Syno DSM Extractor GUI
 
-1. Download the latest version _Syno_DSM_Extractor_GUI_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
-
-### To run the script via task scheduler
-
-See [How to run from task scheduler](https://github.com/007revad/Syno_DSM_Extractor_GUI/blob/main/how_to_run_from_scheduler.md)
-
-### To run the script via SSH
-
-[How to enable SSH and login to DSM via SSH](https://kb.synology.com/en-global/DSM/tutorial/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet)
-
-```YAML
-sudo -s /volume1/scripts/SCRIPT_NAME.sh
-```
-
-**Note:** Replace /volume1/scripts/ with the path to where the script is located.
-
-### Troubleshooting
-
-If the script won't run check the following:
-
-1. Make sure you download the zip file and unzipped it to a folder on your Synology (not on your computer).
-2. If the path to the script contains any spaces you need to enclose the path/scriptname in double quotes:
-   ```YAML
-   sudo -s "/volume1/my scripts/SCRIPT_NAME.sh"
-   ```
-3. Make sure you unpacked the zip or rar file that you downloaded and are trying to run the SCRIPT_NAME.sh file.
-4. Set the script file as executable:
-   ```YAML
-   sudo chmod +x "/volume1/scripts/SCRIPT_NAME.sh"
-   ```
 
 ### Screenshots
 
