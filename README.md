@@ -23,6 +23,9 @@ Open PowerShell or Windows Command Prompt in administrator mode by right-clickin
 ```
 wsl --install
 ```
+This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
+
+Then reboot.
 
 ### Download the script
 
