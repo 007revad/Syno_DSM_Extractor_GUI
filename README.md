@@ -37,9 +37,9 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 ### Screenshots
 
 <!--- <p align="center">Description of image 1 goes here</p> --->
-<p align="center"><img src="/images/IMAGE_NAME.png"></p>
+<p align="center"><img src="/images/test-image0.png"></p>
 
 <br>
 
 <!--- <p align="center">Description of image 2 goes here</p> --->
-<p align="center"><img src="/images/IMAGE_NAME.png"></p>
+<p align="center"><img src="/images/test-image1.png"></p>
