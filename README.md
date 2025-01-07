@@ -16,11 +16,13 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 
 1. Windows 10 or 11 running on either a physical device or virtual machine.
 2. Windows System for Linux (WSL) installed with Ubuntu.
-    - In Windows Powershell type the following to install WSL and the default Ubuntu from Windows Store: 
-    ```
-    wsl --install
-    ```
-    - You may need to reboot after it's installed.
+
+### Installing WSL and Ubuntu
+
+Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting "Run as administrator", enter the wsl --install command, then restart your machine.
+```
+wsl --install
+```
 
 ### Download the script
 
