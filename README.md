@@ -19,13 +19,13 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 
 ### Installing WSL and Ubuntu
 
-Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting "Run as administrator", enter the wsl --install command, then restart your machine.
-```
-wsl --install
-```
-This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
-
-Then reboot.
+1. Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting "Run as administrator"
+2. Enter the wsl --install command:
+    ```
+    wsl --install
+    ```
+    This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
+3. Then reboot.
 
 ### Download the script
 
