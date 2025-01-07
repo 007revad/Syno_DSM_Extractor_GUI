@@ -1,0 +1,11 @@
+﻿Steps needed after running syno_archive_extractor:
+
+After running syno_archive_extractor.sh you will have a hda.tgz file that you'll want to extract. 
+
+Do NOT extract it as root or sudo or it will overwrite all of DSM system files!?!?!
+ 
+If you use WinRAR to extract hda.tgz you'll get a file named hda. 
+Just rename it to hda.tar then extract hda.tar or use WinRAR to open it and extract just file(s) you want.
+
+Note: When you use WinRAR to extract the hda.tar file it will replace symlinks with the files those symlinks point to.
+
