@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 #----------------------------------------------------------
+# Modified version of syno_archive_extractor.sh for
+# Syno DSM Extractor GUI by 007revad
+# https://github.com/007revad/Syno_DSM_Extractor_GUI
+#----------------------------------------------------------
 # syno_archive_extractor.sh by 007revad
 # https://github.com/007revad/Synology_Archive_Extractor
 #----------------------------------------------------------
@@ -20,20 +24,25 @@
 # SMALL= 11              # Small Patch
 #----------------------------------------------------------
 
-# Edit these 3 variables to suit your folder locations
+scriptpath="$(dirname "$(realpath "$0")")"
 
 # Location of the folder containing the files to extract
-inpath="/home/dave/scripts/sae/in"
+inpath="$scriptpath/in"
 
 # Location of the folder extract to
-outpath="/home/dave/scripts/sae/out"
+outpath="$scriptpath/out"
 
 # Location of the sae.py script
 #pyscript="/bin/sae.py"
-pyscript="/home/dave/scripts/sae/sae.py"
+pyscript="$scriptpath/sae.py"
 
 # User to own extracted files
-user="dave"
+if [[ $1 ]]; then
+    user="$1"
+else
+    echo "Username argument missing!"
+    exit
+fi
 
 #----------------------------------------------------------
 
@@ -61,14 +70,7 @@ if [[ ! -d "${inpath}" ]]; then
     exit
 fi
 if [[ ! -d "${outpath}" ]]; then
-    echo "Directory not found! ${outpath}"
-    echo "Do you want to create it? [y/n]"
-    read -r answer
-    if [[ ${answer,,} == y ]]; then
-        mkdir "${outpath}"
-    else
-        exit
-    fi
+    mkdir "${outpath}"
 fi
 
 
@@ -181,4 +183,6 @@ done
 if [[ $user ]]; then
     chown -R "$user" "$outpath"
 fi
+
+echo -e "\nFinished"
 
