@@ -29,7 +29,7 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
     wsl --install
     ```
     This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
-3. Then reboot.
+3. Then you may need to reboot.
 
 ### Download Syno DSM Extractor GUI
 
