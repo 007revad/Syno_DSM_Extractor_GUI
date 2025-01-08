@@ -30,6 +30,10 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
     ```
     This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
 3. Then you may need to reboot.
+4. Go to Windows Start Menu and click on Ubuntu.
+    <p align="left"><img src="/images/open-ubuntu.png"></p>
+6. When asked to create a username, type a username in lower case and press Enter.
+7. When asked to create a password type a password and press Enter.
 
 ### Download Syno DSM Extractor GUI
 
