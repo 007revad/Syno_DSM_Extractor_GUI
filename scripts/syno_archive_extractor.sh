@@ -36,6 +36,9 @@ outpath="$scriptpath/out"
 #pyscript="/bin/sae.py"
 pyscript="$scriptpath/sae.py"
 
+# Location of logfile
+logfile="$scriptpath/sde.log"
+
 # User to own extracted files
 if [[ $1 ]]; then
     user="$1"
@@ -48,7 +51,7 @@ fi
 
 # Check script is running as root
 if [[ $( whoami ) != "root" ]]; then
-    echo "This script must be run as root or sudo."
+    echo "This script must be run as root or sudo." |& tee -a "$logfile"
     exit
 fi
 
@@ -56,7 +59,7 @@ fi
 if [[ -f "$pyscript" ]]; then
     # Make sure sae.py script is executable
     if ! chmod a+x "$pyscript"; then
-        echo "Failed to set sae.py as executable!"
+        echo "Failed to set sae.py as executable!" |& tee -a "$logfile"
         exit
     fi
 else
@@ -66,11 +69,21 @@ fi
 
 # Check inpath and outpath directories exist
 if [[ ! -d "${inpath}" ]]; then
-    echo "Directory not found! ${inpath}"
+    echo "Directory not found! ${inpath}" |& tee -a "$logfile"
     exit
 fi
 if [[ ! -d "${outpath}" ]]; then
     mkdir "${outpath}"
+fi
+
+# Remove old "finished" file
+if [[ -f "$scriptpath/finished" ]]; then
+    rm "$scriptpath/finished" 
+    if [[ -f "$scriptpath/finished" ]]; then
+        echo "Failed to delete $scriptpath/finished" |& tee -a "$logfile"
+    #else
+    #    echo "Deleted $scriptpath/finished"
+    fi
 fi
 
 
@@ -107,34 +120,34 @@ errtype(){
 extract(){ 
     # $1 is archive type
     # $2 is archive /path/file
-    echo -e "\n$file" >&2
+    echo -e "\n$file" |& tee -a "$logfile"
 
     if [[ ! -d "${outpath}/$filename" ]]; then
-        mkdir "${outpath}/$filename"
+        mkdir "${outpath}/$filename" |& tee -a "$logfile"
     fi
 
     if [[ -d "${outpath}/$filename" ]]; then
         if [[ "$(ls -A "${outpath}/$filename")" ]]; then
             #echo -e "Skipping non-empty directory: \n${outpath}/$filename"
-            echo "Skipping non-empty directory: ${outpath}/$filename" >&2
+            echo "Skipping non-empty directory: ${outpath}/$filename" |& tee -a "$logfile"
         else
             # Run sae.py and capture it's stdout
-            echo "---------------------------------------"
+            echo "---------------------------------------" |& tee -a "$logfile"
             returned="$(python3 "$pyscript" -k "$1" -a "$2" -d "${outpath}/$filename")"
 
             # Show sae.py's stdout (without True or False)
-            echo "$returned" | sed -E '/False|True/d'
+            echo "$returned" | sed -E '/False|True/d' |& tee -a "$logfile"
 
             retcode="$(echo "$returned" | grep errno | awk '{print $(NF-0)}' | cut -d")" -f1)"
             if [[ $retcode -gt "0" ]]; then
                 # Show error type if there was an error
                 errtype "$retcode"
             else
-                echo "Extracted ok" >&2
+                echo "Extracted ok" |& tee -a "$logfile"
             fi
         fi
     else
-        echo "Directory not found! ${outpath}/$filename" >&2
+        echo "Directory not found! ${outpath}/$filename" |& tee -a "$logfile"
     fi
 }
 
@@ -181,8 +194,11 @@ done
 
 # Change owner so user can copy and delete unpacked files
 if [[ $user ]]; then
-    chown -R "$user" "$outpath"
+    chown -R "$user" "$outpath" |& tee -a "$logfile"
 fi
 
-echo -e "\nFinished"
+echo -e "\nFinished" |& tee -a "$logfile"
+
+# Create "finished" file so GUI knows when to close wsl window
+touch "$scriptpath/finished"
 
