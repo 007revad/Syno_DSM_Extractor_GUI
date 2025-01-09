@@ -98,11 +98,11 @@
 
 :TIMER
   %%ext_in = @ext(%%file_in)
-  if @file(%%file_out)
-    dialog set, TEXT3, File Exists!
-  else
-    dialog set, TEXT3, 
-  end
+  #if @file(%%file_out)
+  #  dialog set, TEXT3, File Exists!
+  #else
+  #  dialog set, TEXT3, 
+  #end
   if @equal(%%ext_in,pat) @equal(%%ext_in,spk)
     dialog enable, Extract
   else
