@@ -35,6 +35,8 @@ This is a Windows GUI for the bash and python scripts here [Synology_Archive_Ext
 6. When asked to create a username, type a username in lower case and press Enter.
 7. When asked to create a password type a password and press Enter.
 
+I use the same username and password that I use in Windows, just to make it easier.
+
 ### Download Syno DSM Extractor GUI
 
 1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
