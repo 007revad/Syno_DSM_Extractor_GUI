@@ -44,12 +44,29 @@ I use the same username and password that I use in Windows, just to make it easi
 3. Unzip the zip file.
 4. Copy wsl.exe from `C:\Windows\System32\wsl.exe` into the Syno_DSM_Extractor_GUI folder.
 
+### Other settings
+
+The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
+1. It will ask you set your Ubuntu username and the drive letter Windows assigned to Ubuntu.
+2. You need to install the included scripts by clicking "Settings > Install Scripts".
+3. You need to install the included libraries by clicking "Settings > Install Libraries".
+
 ### Screenshots
 
 <!--- <p align="center">Description of image 1 goes here</p> --->
-<p align="center"><img src="/images/test-image0.png"></p>
+<p align="center"><img src="/images/about.png"></p>
 
 <br>
 
 <!--- <p align="center">Description of image 2 goes here</p> --->
-<p align="center"><img src="/images/test-image1.png"></p>
+<p align="center"><img src="/images/gui.png"></p>
+
+<br>
+
+<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center"><img src="/images/install.png"></p>
+
+<br>
+
+<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center"><img src="/images/settings.png"></p>
