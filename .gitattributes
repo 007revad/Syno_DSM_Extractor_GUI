@@ -33,6 +33,7 @@
 *.csv      text eol=crlf
 
 # Graphics
+*.bmp      binary
 *.png      binary
 *.jpg      binary
 *.jpeg     binary
