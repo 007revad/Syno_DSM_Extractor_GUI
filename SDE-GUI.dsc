@@ -12,7 +12,7 @@
 #-----------------------------------------------------------------------------#
 
   #define function,curdir_wsl
-  #define command,Settings,CheckSettings,open_wsl
+  #define command,Settings,CheckSettings
 
   # VDSConsole dll
 #  %%LoadDLL = vdsconsole.dll
@@ -35,23 +35,15 @@
     exit
   end
 
-
-#shell open,wsl.exe
-#exit
-
-#goto test
-
-
-
   # Project Variables
   %%Title = Syno DSM Extractor GUI
   %%MainClass = SDEMain
   %%ClassMain = %%MainClass
   %%Company = 007revad
   if @greater(@datetime(yyyy),2025)
-    %%Copyright = "Copyright © 2025-"@datetime(yyyy)
+    %%Copyright = "Copyright Â© 2025-"@datetime(yyyy)
   else
-    %%Copyright = "Copyright © 2025"
+    %%Copyright = "Copyright Â© 2025"
   end
   %%Beta =
   %%Version = @verinfo(%0,V) %%Beta
@@ -77,7 +69,7 @@
   %%username = @trim(@lower(@pipe())) 
 
 
-  DIALOG CREATE,%%Title - v%%Version,-1,0,560,156,DRAGDROP
+  DIALOG CREATE,%%Title - v%%Version,-1,0,560,110,DRAGDROP
   #DIALOG ADD,MENU,Settings,Settings|Set Ubuntu User|Set Ubuntu Drive Letter
   DIALOG ADD,MENU,Settings,Settings|Install Scripts|Install Libraries
   DIALOG ADD,MENU,Help,About
@@ -87,10 +79,7 @@
   DIALOG ADD,TEXT,TEXT1,20,18,45,18,In File
   DIALOG ADD,EDIT,EDIT1,18,70,390,18,,,READONLY
   DIALOG ADD,BUTTON,Select,15,468,70,24,Select File
-  DIALOG ADD,TEXT,TEXT3,50,470,70,18,,,BRed
   DIALOG ADD,BUTTON,Extract,60,240,74,24,Extract
-  DIALOG ADD,TEXT,TEXT4,120,20,518,18,,,FITTEXT,BGGreen
-  DIALOG ADD,TEXT,TEXT5,120,20,518,18,,,FITTEXT,BCRed
   dialog disable, Extract
   dialog hide, TEXT5
   DIALOG HIDE
@@ -465,18 +454,6 @@
         goto EvLoop
       end
     end
-
-
-    #%%pipe = @pipe()
-    #
-    #if @null(%%pipe)
-    #  dialog set, TEXT4, Finished
-    #else
-    #  dialog set, TEXT5, Finished with errors!
-    #  dialog show, TEXT5
-    #  info %%pipe ,
-    #end
-
   end
 
   # Move extracted pat/sdk folder to pat/sdk folder
@@ -505,110 +482,3 @@
   %d = mnt@chr(47)%l%c
   exit %d
 
-
-:open_wsl
-# currently not used
-  #----------------------------------------------------------------------------
-  # Command to open WSL shell
-  #----------------------------------------------------------------------------
-  # Open WSL shell to run script to extract .pat file
-  #shell open,@windir(S)\wsl.exe
-  shell open,%%exedir\wsl.exe
-  if @not(@ok())
-    warn Failed to open wsl window! ,
-    exit 1
-  end
-  wait 1
-
-  # Get window id "user@hostname: /mnt/<drive-letter>/<path>
-  #%%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)mnt@chr(47)d@chr(47)WORK@chr(47)VDS@chr(47)Syno DSM Extractor GUI
-  %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)@curdir_wsl() 
-
-  # Wait until WSL window has opened (timeout after 2 seconds)
-  %C = 0
-  repeat
-    wait 0.2
-    %C = @succ(%C)
-  until @winexists(%%windowid) @greater(%C,10)
-
-  # CD to /
-  window send,%%windowid,cd @chr(47)@key(ENTER), wait
-  if @not(@ok())
-    warn Failed to cd to /! ,
-    exit 1
-  end
-  #wait 2
-
-  # Get window id again as now titlebar only shows "user@hostname: /"
-  %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47) 
-
-  # Wait until WSL window title has changed (timeout after 2 seconds)
-  %C = 0
-  repeat
-    wait 0.2
-    %C = @succ(%C)
-  until @winexists(%%windowid) @greater(%C,10)
-  exit
-
-
-
-#######################################################################################################################
-
-
-  # not used
-  # Show set user dialog if user not set
-  %%sdeuser = @iniread(main, user)
-  if @null(%%sdeuser)
-    goto SET UBUNTU USERMENU
-  end
-
-
-  # not used
-  # Show WSL drive letter dialog if drive letter not set
-  %%driveletter = @iniread(main, drive)
-  if @null(%%driveletter)
-    goto SET UBUNTU DRIVE LETTERMENU
-  end
-
-
-# not used
-:SET USERMENU
-:SET WSL USERMENU
-:SET UBUNTU USERMENU
-  %%sdeuser = @iniread(main, user)
-  DIALOG CREATE,Set Ubuntu User,-1,0,240,125,NOMIN
-  DIALOG ADD,TEXT,CurrentUser,16,20,,,Current User
-  DIALOG ADD,TEXT,CUser,16,100,110,18,,,
-  DIALOG ADD,TEXT,NewUser,46,20,,,Set User
-  DIALOG ADD,EDIT,NUser,46,100,110,18
-  DIALOG SET,CUser,%%sdeuser
-  DIALOG ADD,BUTTON,Save,82,90,64,24,Save
-  DIALOG SHOWMODAL
-  %%newuser = @dlgtext(NUser)
-  %%closechild = 1
-  dialog close
-  goto EvLoop
-
-
-# not used
-:SET DRIVE LETTERMENU
-:SET WSL DRIVE LETTERMENU
-:SET UBUNTU DRIVE LETTERMENU
-  %%driveletter = @iniread(main, drive)
-  DIALOG CREATE,Set Ubuntu Drive Letter,-1,0,240,125,NOMIN
-  DIALOG ADD,TEXT,CurrentDrive,16,20,,,Current Drive Letter
-  DIALOG ADD,TEXT,CDrive,16,140,70,18,,,
-  DIALOG ADD,TEXT,NewDrive,46,20,,,Set Drive Letter
-  DIALOG ADD,EDIT,NDrive,46,140,70,18
-  DIALOG SET,CDrive,%%driveletter
-  DIALOG ADD,BUTTON,Save,82,90,64,24,Save
-  DIALOG SHOWMODAL
-  %%newdrive = @dlgtext(NDrive)
-  %%closechild = 1
-  dialog close
-  goto EvLoop
-
-
-:test
-
- 
