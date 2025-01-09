@@ -58,15 +58,15 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
-<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center">Ready to extract my mate Pat :o)</p>
 <p align="center"><img src="/images/gui.png"></p>
 
 <br>
 
-<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center">Install included scripts and libraries</p>
 <p align="center"><img src="/images/install.png"></p>
 
 <br>
 
-<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center">Settings dialog</p>
 <p align="center"><img src="/images/settings.png"></p>
