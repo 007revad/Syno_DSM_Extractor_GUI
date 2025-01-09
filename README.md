@@ -10,7 +10,7 @@ This program is provided only for the purpose of recovering or repairing Synolog
 
 ### Description
 
-Windows GUI for extracting Synology DSM pat files
+Windows GUI for extracting Synology DSM 7 pat files and spk package files.
 
 This is a Windows GUI for the bash and python scripts here [Synology_Archive_Extractor](https://github.com/007revad/Synology_Archive_Extractor)
 
