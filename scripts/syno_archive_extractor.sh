@@ -3,6 +3,7 @@
 # Modified version of syno_archive_extractor.sh for
 # Syno DSM Extractor GUI by 007revad
 # https://github.com/007revad/Syno_DSM_Extractor_GUI
+#          v1.0 2025-01-10
 #----------------------------------------------------------
 # syno_archive_extractor.sh by 007revad
 # https://github.com/007revad/Synology_Archive_Extractor
@@ -84,6 +85,13 @@ if [[ -f "$scriptpath/finished" ]]; then
     #else
     #    echo "Deleted $scriptpath/finished"
     fi
+fi
+
+# Move libraries from ~/sde/lib to /usr/lib
+echo "Checking for missing libraries"
+if ls "${scriptpath:?}/lib" | grep 'lib'; then
+    mv "${scriptpath:?}/lib/"lib* /usr/lib
+    echo "Installed libraries"
 fi
 
 
@@ -191,6 +199,9 @@ for archive in "${inpath}"/*; do
     fi
 done
 
+
+# Delete Synology archives from in folder
+[ "$(ls -A "${scriptpath:?}/in/")" ] && rm "${scriptpath:?}/in/"*
 
 # Change owner so user can copy and delete unpacked files
 if [[ $user ]]; then
