@@ -63,6 +63,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
+<p align="center">Pat likes iTunes :o)</p>
+<p align="center"><img src="/images/gui-spk.png"></p>
+
+<br>
+
 <p align="center">Install included scripts and libraries</p>
 <p align="center"><img src="/images/install.png"></p>
 
