@@ -13,6 +13,8 @@ This program is provided only for the purpose of recovering or repairing Synolog
 
 Windows GUI for extracting Synology DSM 7 pat files and spk package files.
 
+You can drag and drop a .pat file or .spk file onto the window, or click the Select File button to browse for the .pat or .spk file. I'll add a Windows right-click context menu later.
+
 ### Requirements
 
 1. Computer with a x86_64 CPU.
