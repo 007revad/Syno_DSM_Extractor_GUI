@@ -43,7 +43,6 @@ I use the same username and password that I use in Windows, just to make it easi
 1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
-4. Copy wsl.exe from `C:\Windows\System32\wsl.exe` into the Syno_DSM_Extractor_GUI folder.
 
 ### Other settings
 
