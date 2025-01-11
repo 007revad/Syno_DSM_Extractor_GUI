@@ -1,2 +1,6 @@
+v1.0.
+- Automatically detects the WSL Ubuntu drive letter.
+  - You can still change it in Settings.
+
 v1.0.0.11
 - First release.
