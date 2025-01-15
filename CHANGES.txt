@@ -2,7 +2,7 @@ v1.0.1.?????????????????
 - Added an installer.
 - Added Windows context menu shortcuts.
 - Added check that Windows System for Linux is installed.
-- Automatically detects the WSL Ubuntu drive letter.
+- Now automatically detects the WSL Ubuntu drive letter.
   - You can still change it in Settings.
 - Changed so you don't need to copy wsl.exe to the same folder as SDE.exe.
 
