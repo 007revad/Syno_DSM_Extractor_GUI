@@ -31,6 +31,9 @@
 #  #define command,consoleio
 #  #define function,consoleio
 
+  #resource add,icon,images\dsm_48.ico
+  #resource add,icon,images\pkg_48.ico
+
   OPTION SCALE,96
   OPTION DECIMALSEP,"."
   OPTION TIMESEP,":"
