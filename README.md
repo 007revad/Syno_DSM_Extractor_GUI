@@ -47,8 +47,8 @@ I use the same username and password that I use in Windows, just to make it easi
 
 The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 1. It will ask you set your Ubuntu username and the drive letter Windows assigned to Ubuntu.
-2. You need to install the included scripts by clicking "Settings > Install Scripts".
-3. You need to install the included libraries by clicking "Settings > Install Libraries".
+2. You then need to install the included scripts by clicking "Settings > Install Scripts".
+3. You then need to install the included libraries by clicking "Settings > Install Libraries".
 
 ### Screenshots
 
