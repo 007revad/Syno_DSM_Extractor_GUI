@@ -11,8 +11,19 @@
 # dave@Dave-PC:/$ sudo /home/dave/sde/syno_archive_extractor.sh
 #-----------------------------------------------------------------------------#
 
+# To Do
+# Make it so only 1 instance can run at a time?
+# Add Windows context menu
+# Add menu to install WSL (wsl --install in PowerShell admin mode)
+# Change to use consoleio?
+#
+# Done
+# Auto detect wsl Ubuntu drive letter
+# Changed so you don't need to copy wsl.exe to the same folder as SDE.exe
+
+
   #define function,curdir_wsl
-  #define command,Settings,CheckSettings
+  #define command,Settings,CheckSettings,open_wsl
 
   # VDSConsole dll
 #  %%LoadDLL = vdsconsole.dll
@@ -23,20 +34,17 @@
   OPTION SCALE,96
   OPTION DECIMALSEP,"."
   OPTION TIMESEP,":"
-  #OPTION DATESEP,"/"
-  #OPTION DATEFORMAT,"dd/mm/yyyy"
+  OPTION DATESEP,"/"
+  OPTION DATEFORMAT,"dd/mm/yyyy"
   OPTION TIPTIME,4
   OPTION FIELDSEP,"|"
   OPTION REGKEY,007revad Software\Syno DSM Extractor GUI
 
   %%exedir = @curdir()
-  if @not(@file(%%exedir\wsl.exe)) 
-    warn You need to copy @windir(S)\wsl.exe to %%exedir ,
-    exit
-  end
 
   # Project Variables
   %%Title = Syno DSM Extractor GUI
+  %%ExeName = SDE-GUI.exe
   %%MainClass = SDEMain
   %%ClassMain = %%MainClass
   %%Company = 007revad
@@ -52,13 +60,17 @@
   # Popup Dialog Title
   title %%Title
 
-  %%inifile = @path(%0)SDE-GUI.ini
+  # Inifile
+  if @file(@windir(Local AppData)\%%Company\Syno DSM Extractor GUI,D)
+    %%inifile = @windir(Local AppData)\%%Company\Syno DSM Extractor GUI\SDE-GUI.ini
+  else
+    %%inifile = @path(%0)SDE-GUI.ini
+  end
   inifile open, %%inifile
   if @not(@ok())
     warn Failed to open SDE-GUI.ini
     goto Close
   end
-
 
   # Get PC hostname
   runh cmd /C HOSTNAME ,pipe
@@ -68,8 +80,49 @@
   runh cmd /C echo @chr(37)USERNAME@chr(37) ,pipe
   %%username = @trim(@lower(@pipe())) 
 
+  # Get PowerShell exe name and path
+  #runh cmd /C where pwsh, pipe
+  #%p = @pipe() 
+  #if @file(@trim(%p)) 
+  #  %%powershell = pwsh
+  #  %%powershellpath = @trim(%p)
+  #else
+    runh cmd /C where powershell, pipe
+    %p = @pipe() 
+    if @file(@trim(%p)) 
+      %%powershell = powershell
+      %%powershellpath = @trim(%p)
+    else
+      warn PowerShell not found! ,
+    end
+  #end
 
-  DIALOG CREATE,%%Title - v%%Version,-1,0,560,110,DRAGDROP
+  # Check wsl is installed
+  # This is a 32 bit app so we need to use sysnative instead of system32
+  if @not(@file(@windir()\sysnative\wsl.exe))
+    if @not(@null(%%powershell))
+      %x = @ask(Windows System for Linux is not installed. @cr()Do you want to install it now?)
+      if @equal(%x,1)
+        goto install_wsl
+      else
+        exit
+      end
+    else
+      warn Windows System for Linux is not installed! ,
+      exit
+    end
+  end
+
+  # Set Ubuntu drive letter if not already set
+  if @null(@iniread(main, drive))
+    if @not(@null(%%powershell))
+      runh %%powershell get-psdrive -psprovider filesystem | findstr "Ubuntu", pipe
+      %%driveletter = @substr(@trim(@pipe()),1)
+      inifile write,main,drive,@upper(%%driveletter)
+    end
+  end
+
+  DIALOG CREATE,%%Title - v%%Version,-1,0,560,110,DRAGDROP,SAVEPOS
   #DIALOG ADD,MENU,Settings,Settings|Set Ubuntu User|Set Ubuntu Drive Letter
   DIALOG ADD,MENU,Settings,Settings|Install Scripts|Install Libraries
   DIALOG ADD,MENU,Help,About
@@ -83,9 +136,11 @@
   dialog disable, Extract
   dialog hide, TEXT5
   DIALOG HIDE
-  if @not(@null(%1))
-    %%file_in = %1
-    gosub VerifyFile
+  if @file(%1)
+    if @equal(@ext(%1),.pat) @equal(@ext(%1),.spk)
+      %%file_in = %1
+      gosub VerifyFile
+    end
   end
   DIALOG SHOW
 
@@ -188,24 +243,30 @@
 
   %%newuser = @dlgtext(NUser)
   %%newdrive = @dlgtext(NDrive)
-  %%newmove = @dlgtext(CHECK1)
+  %%newmove = @dlgtext(CHECK1) 
 
-  %%closechild = 1
+  %%event = @event()
+  if @unequal(%%event,CLOSE)
+    %%closechild = 1
+  end
   dialog close
   exit
 
 
 :SaveBUTTON
+  # User name
   if @not(@null(%%newuser))
     if @unequal(%%sdeuser,%%newuser)
       inifile write,main,user,%%newuser
     end
   end
+  # Drive letter
   if @not(@null(%%newdrive))
     if @unequal(%%driveletter,@upper(%%newdrive))
       inifile write,main,drive,@upper(%%newdrive)
     end
   end
+  # Move unpacked files
   inifile write,main,move,%%newmove
   goto EvLoop
 
@@ -279,6 +340,9 @@
     info @text(%%installed)
     title %%Title
   end
+
+  # Create file to hide shell header
+  %x = @new(FILE,%%driveletter:\home\%%sdeuser\.hushlogin,CREATE)
 
   list close,%%installed
   goto EvLoop
@@ -367,8 +431,8 @@
   file copy,%%file_in,%%driveletter:\home\%%sdeuser\sde\in\%%name.%%ext_in,CONFIRM,SHOWERRORS
   if @ok()
     # Open WSL shell to run script to extract .pat file
-    #shell open,@windir(S)\wsl.exe
-    shell open,%%exedir\wsl.exe
+    # This is a 32 bit app so we need to use sysnative instead of system32
+    shell open,@windir()\sysnative\wsl.exe
     if @not(@ok())
       warn Failed to open wsl window! ,
       goto EvLoop
@@ -376,7 +440,6 @@
     wait 1
 
     # Get window id "user@hostname: /mnt/<drive-letter>/<path>
-    #%%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)mnt@chr(47)d@chr(47)WORK@chr(47)VDS@chr(47)Syno DSM Extractor GUI
     %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)@curdir_wsl() 
 
     # Wait until WSL window has opened (timeout after 2 seconds)
@@ -481,4 +544,51 @@
   %c = @strrep(%b,\,@chr(47),ALL)
   %d = mnt@chr(47)%l%c
   exit %d
+
+
+:open_wsl
+# currently not used
+  #----------------------------------------------------------------------------
+  # Command to open WSL shell
+  #----------------------------------------------------------------------------
+  # Open WSL shell to run script to extract .pat file
+  #shell open,@windir(S)\wsl.exe
+  #shell open,%%exedir\wsl.exe
+  shell open,@windir()\sysnative\wsl.exe
+  if @not(@ok())
+    warn Failed to open wsl window! ,
+    exit 1
+  end
+  wait 1
+
+  # Get window id "user@hostname: /mnt/<drive-letter>/<path>
+  #%%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)mnt@chr(47)d@chr(47)WORK@chr(47)VDS@chr(47)Syno DSM Extractor GUI
+  %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)@curdir_wsl() 
+
+  # Wait until WSL window has opened (timeout after 2 seconds)
+  %C = 0
+  repeat
+    wait 0.2
+    %C = @succ(%C)
+  until @winexists(%%windowid) @greater(%C,10)
+
+  # CD to /
+  window send,%%windowid,cd @chr(47)@key(ENTER), wait
+  if @not(@ok())
+    warn Failed to cd to /! ,
+    exit 1
+  end
+  #wait 2
+
+  # Get window id again as now titlebar only shows "user@hostname: /"
+  %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47) 
+
+  # Wait until WSL window title has changed (timeout after 2 seconds)
+  %C = 0
+  repeat
+    wait 0.2
+    %C = @succ(%C)
+  until @winexists(%%windowid) @greater(%C,10)
+  exit
+
 
