@@ -20,7 +20,6 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 1. Computer with a x86_64 CPU.
 2. Windows 11 or Windows 10 version 2004 and higher (Build 19041 and higher) running on either a physical device or virtual machine.
 3. Windows System for Linux (WSL) installed with Ubuntu.
-4. A copy of wsl.exe be in the same folder as SDE-GUI.exe
 
 ### Installing WSL and Ubuntu
 
