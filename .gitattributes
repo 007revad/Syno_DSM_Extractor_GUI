@@ -28,7 +28,7 @@
 *.mustache text
 *.tab      text
 *.tsv      text
-*.txt      text
+*.txt      text eol=crlf
 *.sql      text
 *.csv      text eol=crlf
 
@@ -64,6 +64,9 @@
 # Visual Dialog Script
 *.dsc      text eol=crlf
 *.dsp      text eol=crlf
+
+* Inno Setup
+*.iss      text eol=crlf
 
 # Config files
 *.ini      text eol=crlf
