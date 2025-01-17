@@ -1,6 +1,6 @@
 v1.0.1.?????????????????
 - Added an installer.
-- Added Windows context menu shortcuts.
+- Added Windows context menu shortcuts (when installed with the installer).
 - Added check that Windows System for Linux is installed.
 - Now automatically detects the WSL Ubuntu drive letter.
   - You can still change it in Settings.
