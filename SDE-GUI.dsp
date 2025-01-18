@@ -1,33 +1,35 @@
 [Compiler]
 Project Type=61
-IconFile=#sde-32.ico
+IconFile=#images\sde-32.ico
 InfoVersion=1
 CompanyName=007revad
 FileDescription=
-FileVersion=1.0.0.11
-LegalCopyright=Copyright © 2025
+FileVersion=1.1.0.21
+LegalCopyright=Copyright Â© 2025
 OriginalFilename=SDE-GUI.exe
 ProductName=Syno DSM Extractor GUI
-ProductVersion=1.0.0.0
+ProductVersion=1.1.0.0
 AutoVerInc=1
 Include Manifest=1
 Execution Level=1
 Create Map=0
 [Project]
 Main File=#SDE-GUI.dsc
-tl_Main File=79
+tl_Main File=186
 DS Version=6.0
 Other File 1=
 [WatchList]
-Watch 0=%%file_in
-Watch 1=%%move
-Watch 2=%n
-Watch 3=%p
+Watch 0=
+Watch 1=
+Watch 2=
+Watch 3=
 Watch 4=
-Watch 5=%c
-Watch 6=%q
-Watch 7=%x
+Watch 5=
+Watch 6=
+Watch 7=
 Watch 8=
+Watch 9=
+Watch 10=
 [Syntax]
 Commands=SETTINGS,CHECKSETTINGS,OPEN_WSL
 Functions=@CURDIR_WSL
@@ -53,3 +55,5 @@ BP6=
 BP7=
 BP8=
 BP9=
+[Designer]
+CustomColors=2545DE
