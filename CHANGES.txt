@@ -1,4 +1,4 @@
-v1.1.0.?????????????????
+v1.1.0.21
 - Added an installer.
   - Added Windows context menu shortcuts (when installed with the installer).
   - Added .pat and .spk file association (when installed with the installer).
