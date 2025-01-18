@@ -1,5 +1,5 @@
 [_TopOfScript]
-; This Inno script is part of Syno DSM Extractor GUI - Copyright © 2025 007revad
+; This Inno script is part of Syno DSM Extractor GUI - Copyright Â© 2025 007revad
 
 [ISPP]
 #define MyAppType ""
@@ -8,7 +8,7 @@
 #define MyAppName "Syno DSM Extractor GUI"
 #define MyAppExeName "SDE-GUI"
 #define MyAppPublisher "007revad"
-#define MyAppVer "1.0.0"
+#define MyAppVer "1.1.0"
 ; https://stackoverflow.com/questions/49388942/extracting-application-version-number-using-inno-setup-but-excluding-the-fourth
 #define AppVerText() \
    ParseVersion(SetupSetting(SourcePath) + "SDE-GUI.exe", \
@@ -44,8 +44,8 @@ VersionInfoTextVersion={#AppVerText}
 ; https://jrsoftware.org/is6help/index.php?topic=setup_versioninfoproducttextversion
 ;VersionInfoProductTextVersion={#AppVerText}
 
-;VersionInfoCopyright=Copyright © 2025-{#MyDateTimeString} {#MyAppPublisher}
-VersionInfoCopyright=Copyright © {#MyDateTimeString} {#MyAppPublisher}
+;VersionInfoCopyright=Copyright Â© 2025-{#MyDateTimeString} {#MyAppPublisher}
+VersionInfoCopyright=Copyright Â© {#MyDateTimeString} {#MyAppPublisher}
 AppPublisher={#MyAppPublisher}
 DefaultDirName={commonpf}\{#MyAppFolder}
 ;DefaultGroupName={#MyAppPublisher}\{#MyAppFolder}
@@ -77,7 +77,7 @@ VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription={#MyAppDescription}
 ChangesAssociations=true
 TimeStampsInUTC=true
-AppCopyright=Copyright © 2025-{#MyDateTimeString}
+AppCopyright=Copyright Â© 2025-{#MyDateTimeString}
 ;AppVersion={#MyAppVersion} {#MyAppType}
 AppVersion={#MyAppVersion}
 AlwaysShowDirOnReadyPage=true
@@ -91,11 +91,13 @@ Name: english; MessagesFile: compiler:Default.isl
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
 Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
-Name: installwsl; Description: {cm:InstallWSL}; GroupDescription: {cm:WSL}; Flags: unchecked
+;Name: installwsl; Description: {cm:InstallWSL}; GroupDescription: {cm:WSL}; Flags: unchecked
 
 [Files]
 Source: {#MyAppExeName}.exe; DestDir: {app}; Flags: restartreplace uninsrestartdelete promptifolder replacesameversion overwritereadonly uninsremovereadonly
-Source: scripts\*; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
+Source: scripts\sae.py; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
+Source: scripts\syno_archive_extractor.sh; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
+Source: scripts\syno_archive_extractor.txt; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
 Source: SDE-GUI.ini; DestDir: {localappdata}\{#MyAppPublisher}\{#MyAppFolder}; Flags: comparetimestamp confirmoverwrite
 
 Source: lib\lib*; DestDir: {app}\lib; Flags: restartreplace uninsrestartdelete promptifolder replacesameversion overwritereadonly uninsremovereadonly
@@ -124,8 +126,8 @@ AdditionalIcons=Additional shortcuts:
 CreateStartMenuIcon=Create &Start Menu shortcut
 CreateDesktopIcon=Create a &Desktop shortcut
 CreateQuickLaunchIcon=Create a &Quick Launch shortcut
-WSL=Install WSL Ubuntu:
-InstallWSL=&Install Windows System for Linux with Ubuntu
+;WSL=Install WSL Ubuntu:
+;InstallWSL=&Install Windows System for Linux with Ubuntu
 
 [UninstallDelete]
 Name: {tmp}\{#MyAppName}; Type: filesandordirs
@@ -150,5 +152,3 @@ Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\shell\extract\command"; ValueTy
 
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".pat"; ValueData: ""; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".spk"; ValueData: ""; Flags: uninsdeletekey
-
-
