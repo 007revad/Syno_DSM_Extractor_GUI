@@ -13,7 +13,7 @@ This program is provided only for the purpose of recovering or repairing Synolog
 
 Windows GUI for extracting Synology DSM 7 pat files and spk package files.
 
-You can drag and drop a .pat file or .spk file onto the window, or click the Select File button to browse for the .pat or .spk file. I'll add a Windows right-click context menu later.
+You can drag and drop a .pat file or .spk file onto the window, or click the Select File button to browse for the .pat or .spk file. If you used the installer you can right-click on a .pat or .spk file and select extract, or double-click on the .pat or .spk file.
 
 ### Requirements
 
@@ -39,16 +39,24 @@ I use the same username and password that I use in Windows, just to make it easi
 
 ### Download Syno DSM Extractor GUI
 
+1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_setup.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+2. Save the download zip file to a folder on your computer.
+3. Unzip the zip file.
+4. Double-click on the downloaded setup exe file to install Syno DSM Extractor GUI.
+
+or
+
 1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
+4. Run the SDE-GUI.exe from that folder.
 
 ### Other settings
 
 The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 1. It will ask you set your Ubuntu username and the drive letter Windows assigned to Ubuntu.
 2. You then need to install the included scripts by clicking "Settings > Install Scripts".
-3. You then need to install the included libraries by clicking "Settings > Install Libraries".
+3. Finally you need to install the included libraries by clicking "Settings > Install Libraries".
 
 ### Screenshots
 
