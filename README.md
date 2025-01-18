@@ -13,12 +13,13 @@ This program is provided only for the purpose of recovering or repairing Synolog
 
 Windows GUI for extracting Synology DSM 7 pat files and spk package files.
 
+You can drag and drop a .pat file or .spk file onto the window, or click the Select File button to browse for the .pat or .spk file. If you used the installer you can right-click on a .pat or .spk file and select extract, or double-click on the .pat or .spk file.
+
 ### Requirements
 
 1. Computer with a x86_64 CPU.
 2. Windows 11 or Windows 10 version 2004 and higher (Build 19041 and higher) running on either a physical device or virtual machine.
 3. Windows System for Linux (WSL) installed with Ubuntu.
-4. A copy of wsl.exe be in the same folder as SDE-GUI.exe
 
 ### Installing WSL and Ubuntu
 
@@ -38,31 +39,38 @@ I use the same username and password that I use in Windows, just to make it easi
 
 ### Download Syno DSM Extractor GUI
 
+1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_setup.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+2. Save the download zip file to a folder on your computer.
+3. Unzip the zip file.
+4. Double-click on the downloaded setup exe file to install Syno DSM Extractor GUI.
+
+or
+
 1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
-4. Copy wsl.exe from `C:\Windows\System32\wsl.exe` into the Syno_DSM_Extractor_GUI folder.
+4. Run the SDE-GUI.exe from that folder.
 
 ### Other settings
 
 The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 1. It will ask you set your Ubuntu username and the drive letter Windows assigned to Ubuntu.
-2. You need to install the included scripts by clicking "Settings > Install Scripts".
-3. You need to install the included libraries by clicking "Settings > Install Libraries".
+2. You then need to install the included scripts by clicking "Settings > Install Scripts".
+3. Finally you need to install the included libraries by clicking "Settings > Install Libraries".
 
 ### Screenshots
 
-<!--- <p align="center">Description of image 1 goes here</p> --->
+<!--- <p align="center">Description of image goes here</p> --->
 <p align="center"><img src="/images/about.png"></p>
 
 <br>
 
-<p align="center">Ready to extract my mate Pat :o)</p>
+<p align="center">Ready to extract DSM pat file</p>
 <p align="center"><img src="/images/gui.png"></p>
 
 <br>
 
-<p align="center">Pat likes iTunes :o)</p>
+<p align="center">Ready to extract package spk file</p>
 <p align="center"><img src="/images/gui-spk.png"></p>
 
 <br>
@@ -79,3 +87,31 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <p align="center">Enter your Ubuntu password</p>
 <p align="center"><img src="/images/sudo_pwd.png"></p>
+
+<br>
+
+<p align="center">Extracted files</p>
+<p align="center"><img src="/images/extracted.png"></p>
+
+### When installed via the setup.exe
+
+<br>
+
+<!--- <p align="center">Description of image goes here</p> --->
+<p align="center"><img src="/images/setup-finished.png"></p>
+
+<br>
+
+<p align="center">Windows Start Menu</p>
+<p align="center"><img src="/images/windows-start-menu.png"></p>
+
+<br>
+
+<p align="center">File Association</p>
+<p align="center"><img src="/images/file-association.png"></p>
+
+<br>
+
+<p align="center">Context Menu</p>
+<p align="center"><img src="/images/context-menu.png"></p>
+

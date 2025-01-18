@@ -1,2 +1,15 @@
+v1.1.0.21
+- Added an installer.
+  - Added Windows context menu shortcuts (when installed with the installer).
+  - Added .pat and .spk file association (when installed with the installer).
+- Added 'Check for Updates' menu option.
+- Added check that Windows System for Linux is installed.
+  - Shows how to install WSL if it's not installed.
+- Now automatically detects the WSL Ubuntu drive letter.
+  - You can still change it in Settings.
+- Changed so you don't need to copy wsl.exe to the same folder as SDE.exe.
+- Changed so only 1 instance can run at a time.
+  - Changed to send right-clicked or double-clicked file to the open SDE-GUI window if SDE-GUI is already open.
+
 v1.0.0.11
 - First release.

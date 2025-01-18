@@ -1,0 +1,10 @@
+Getting Started
+
+If you haven't already installed Windows System for Linux see: 
+https://github.com/007revad/Syno_DSM_Extractor_GUI#installing-wsl-and-ubuntu
+
+The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
+1. It will ask you set the drive letter Windows assigned to Ubuntu.
+2. It will ask you set your Ubuntu username.
+3. You need to install the included scripts by clicking "Settings > Install Scripts".
+4. You need to install the included libraries by clicking "Settings > Install Libraries".
