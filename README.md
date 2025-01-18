@@ -84,3 +84,16 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <p align="center">Extracted files</p>
 <p align="center"><img src="/images/extracted.png"></p>
+
+#### If installed via the "Syno DSM Extractor GUI setup.exe"
+
+<br>
+
+<p align="center">File Association</p>
+<p align="center"><img src="/images/file-association.png"></p>
+
+<br>
+
+<p align="center">Context Menu</p>
+<p align="center"><img src="/images/context-menu.png"></p>
+
