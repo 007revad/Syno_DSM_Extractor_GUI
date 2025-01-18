@@ -57,12 +57,12 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
-<p align="center">Ready to extract my mate Pat :o)</p>
+<p align="center">Ready to extract DSM pat file</p>
 <p align="center"><img src="/images/gui.png"></p>
 
 <br>
 
-<p align="center">Pat likes iTunes :o)</p>
+<p align="center">Ready to extract package spk file</p>
 <p align="center"><img src="/images/gui-spk.png"></p>
 
 <br>
