@@ -85,7 +85,7 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 <p align="center">Extracted files</p>
 <p align="center"><img src="/images/extracted.png"></p>
 
-#### If installed via the "Syno DSM Extractor GUI setup.exe"
+### When installed via the setup.exe
 
 <br>
 
