@@ -39,14 +39,16 @@ I use the same username and password that I use in Windows, just to make it easi
 
 ### Download Syno DSM Extractor GUI
 
-1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_setup.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+With Installer
+
+1. Download the latest version _Syno_DSM_Extractor_GUI_installer.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
 4. Double-click on the downloaded setup exe file to install Syno DSM Extractor GUI.
 
-or
+Or without Installer
 
-1. Download the latest version _Syno_DSM_Extractor_GUI_<version>_compiled.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+1. Download the latest version _Syno_DSM_Extractor_GUI_no_installer.zip_ from https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
 2. Save the download zip file to a folder on your computer.
 3. Unzip the zip file.
 4. Run the SDE-GUI.exe from that folder.
