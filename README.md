@@ -94,6 +94,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
+<p align="center">Windows Start Menu</p>
+<p align="center"><img src="/images/windows-start-menu.png"></p>
+
+<br>
+
 <p align="center">File Association</p>
 <p align="center"><img src="/images/file-association.png"></p>
 
