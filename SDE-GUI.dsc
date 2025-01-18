@@ -12,24 +12,23 @@
 #-----------------------------------------------------------------------------#
 
 # To Do
-# Make it so only 1 instance can run at a time?
-# Add Windows context menu
-# Add menu to install WSL (wsl --install in PowerShell admin mode)
-# Change to use consoleio?
+# Add menu to install WSL (wsl --install in PowerShell admin mode) or install WSL during SDE-GUI installation
+# Change to use consoleio.dll?
 #
 # Done
-# Auto detect wsl Ubuntu drive letter
+# Added installer
+# Added Windows context menu (via installer)
+# Added .pat and .spk file assiciation (via installer)
+# Added Check for Updates menu option
+# Changed to show how to install WSL if it's not installed
+# Changed to auto detect wsl Ubuntu drive letter
 # Changed so you don't need to copy wsl.exe to the same folder as SDE.exe
+# Changed so only 1 instance can run at a time
+# Changes to send %1 to open SDE-GUI window if already open
 
 
   #define function,curdir_wsl
   #define command,Settings,CheckSettings,open_wsl
-
-  # VDSConsole dll
-#  %%LoadDLL = vdsconsole.dll
-#  external vdsconsole.dll
-#  #define command,consoleio
-#  #define function,consoleio
 
   #resource add,icon,images\dsm_48.ico
   #resource add,icon,images\pkg_48.ico
@@ -62,6 +61,29 @@
 
   # Popup Dialog Title
   title %%Title
+
+  # Opened from context menu or pat/spk file double-clicked
+  if @file(%1)
+    if @equal(@ext(%1),pat) @equal(@ext(%1),spk)
+      %%file_in = %1
+    end
+  end
+
+  # Check if already running
+  if @winexists(#%%MainClass)
+    #warn %%Title is already running! ,
+    window activate,#%%MainClass
+    if @file(%%file_in)
+      # If double clicked .pat/spk file send to already open SDE-GUI window
+      %%wintop = @winpos(#%%MainClass,T)
+      %%winleft = @winpos(#%%MainClass,L)
+      %%texttop = @sum(%%wintop,64)
+      %%textleft = @sum(%%winleft,73)
+      %%editbox = @winatpoint(%%textleft,%%texttop)
+      window settext,%%editbox,%%file_in
+    end
+    stop
+  end
 
   # Inifile
   if @file(@windir(Local AppData)\%%Company\Syno DSM Extractor GUI,D)
@@ -103,17 +125,24 @@
   # Check wsl is installed
   # This is a 32 bit app so we need to use sysnative instead of system32
   if @not(@file(@windir()\sysnative\wsl.exe))
-    if @not(@null(%%powershell))
-      %x = @ask(Windows System for Linux is not installed. @cr()Do you want to install it now?)
-      if @equal(%x,1)
-        goto install_wsl
-      else
-        exit
-      end
-    else
-      warn Windows System for Linux is not installed! ,
+    #if @not(@null(%%powershell))
+    #  %x = @ask(Windows System for Linux is not installed. @cr()Do you want to install it now?)
+    #  if @equal(%x,1)
+    #    goto install_wsl
+    #  else
+    #    exit
+    #  end
+    #else
+      DIALOG CREATE,%%Title,-1,0,264,130,NOMIN
+      DIALOG ADD,TEXT,TEXT1,20,20,,,Windows System for Linux is not installed!
+      DIALOG ADD,TEXT,TEXT2,47,20,24,,See
+      DIALOG ADD,EXTTEXT,URL,47,44,200,15,<A HREF="https://github.com/007revad/Syno_DSM_Extractor_GUI#installing-wsl-and-ubuntu">Installing WSL and Ubuntu</A>
+      DIALOG ADD,BUTTON,BUTTON1,83,102,64,24,OK
+      DIALOG SHOWMODAL
+      while @event()
+      wend
       exit
-    end
+    #end
   end
 
   # Set Ubuntu drive letter if not already set
@@ -125,46 +154,65 @@
     end
   end
 
-  DIALOG CREATE,%%Title - v%%Version,-1,0,560,110,DRAGDROP,SAVEPOS
-  #DIALOG ADD,MENU,Settings,Settings|Set Ubuntu User|Set Ubuntu Drive Letter
+  DIALOG CREATE,%%Title - v%%Version,-1,0,560,110,CLASS SDEmain,DRAGDROP,SAVEPOS
   DIALOG ADD,MENU,Settings,Settings|Install Scripts|Install Libraries
-  DIALOG ADD,MENU,Help,About
+  DIALOG ADD,MENU,Help,Check for Updates|About
   DIALOG ADD,STYLE,BRed,,,B,,RED
   DIALOG ADD,STYLE,BGGreen,,,BC,,00C400
   DIALOG ADD,STYLE,BCRed,,,BC,,RED
   DIALOG ADD,TEXT,TEXT1,20,18,45,18,In File
-  DIALOG ADD,EDIT,EDIT1,18,70,390,18,,,READONLY
+  DIALOG ADD,EDIT,EDIT1,18,70,390,18,%%file_in,,READONLY
   DIALOG ADD,BUTTON,Select,15,468,70,24,Select File
+  #DIALOG ADD,TEXT,TEXT3,50,470,70,18,,,BRed
   DIALOG ADD,BUTTON,Extract,60,240,74,24,Extract
+  #DIALOG ADD,TEXT,TEXT4,120,20,518,18,,,FITTEXT,BGGreen
+  #DIALOG ADD,TEXT,TEXT5,120,20,518,18,,,FITTEXT,BCRed
   dialog disable, Extract
-  dialog hide, TEXT5
-  DIALOG HIDE
-  if @file(%1)
-    if @equal(@ext(%1),.pat) @equal(@ext(%1),.spk)
-      %%file_in = %1
-      gosub VerifyFile
-    end
-  end
+  #dialog hide, TEXT5
   DIALOG SHOW
+  dialog focus, Select
+
+  goto TIMER
 
 
 :EvLoop
-  CheckSettings
-  wait event, 0.3
-  goto @event() 
+  if @not(@winexists(#SDEset))
+    CheckSettings
+  end
+  wait event, 0.2
+  # %V is event, %W is dialog number that issued it (0,1,2,etc.)
+  parse "%V;%W", @event(D) 
+  if @both(@equal(%V,CLOSE),@winexists(#SDEset))
+    if @null(%%sdeuser) @null(%%driveletter)
+      # Exit app if Ubuntu user or drive letter blank and [x] button clicked
+      # to prevent "You need to set Ubuntu user or drive letter" loop
+      %%closechild =
+    else
+      %%closechild = 1
+    end
+  end
+  dialog select, %W 
+  goto %V 
 
 
 :TIMER
-  %%ext_in = @ext(%%file_in)
-  #if @file(%%file_out)
-  #  dialog set, TEXT3, File Exists!
-  #else
-  #  dialog set, TEXT3, 
-  #end
-  if @equal(%%ext_in,pat) @equal(%%ext_in,spk)
-    dialog enable, Extract
-  else
-    dialog disable, Extract
+  if @not(@winexists(#SDEset))
+    %%file_in = @dlgtext(EDIT1)
+    %%ext_in = @ext(%%file_in)
+    %%sdeuser = @iniread(main, user)
+    %%driveletter = @iniread(main, drive)
+    if @equal(%%ext_in,pat) @equal(%%ext_in,spk)
+      if @both(@not(@null(%%sdeuser)),@not(@null(%%driveletter)))
+        dialog enable, Extract
+        dialog focus, Extract
+      else
+        dialog disable, Extract
+        dialog focus, Select
+      end
+    else
+      dialog disable, Extract
+      dialog focus, Select
+    end
   end
   goto EvLoop 
 
@@ -175,6 +223,9 @@
     stop
   end
   %%closechild =
+  dialog close
+  while @event()
+  wend
   goto EvLoop
 
 
@@ -191,7 +242,8 @@
   DIALOG SHOWMODAL
 :AboutOKBUTTON
   %%closechild = 1
-  dialog close
+  while @event()
+  wend
   goto EvLoop
 
 
@@ -229,7 +281,7 @@
   %%driveletter = @iniread(main, drive)
   %%move = @iniread(main, move,1)
 
-  DIALOG CREATE,Settings,-1,0,245,240,NOMIN
+  DIALOG CREATE,Settings,-1,0,245,240,CLASS SDEset,NOMIN,ONTOP
   # User
   DIALOG ADD,TEXT,NewUser,16,20,,,Ubuntu User
   DIALOG ADD,EDIT,NUser,16,100,124,18,,Enter your Ubuntu user name
@@ -242,21 +294,16 @@
   # Move
   DIALOG ADD,CHECK,CHECK1,151,20,210,18,Extract to same folder as pat/spk file,%%move
   DIALOG ADD,BUTTON,Save,192,90,64,24,Save
-  DIALOG SHOWMODAL
-
-  %%newuser = @dlgtext(NUser)
-  %%newdrive = @dlgtext(NDrive)
-  %%newmove = @dlgtext(CHECK1) 
-
-  %%event = @event()
-  if @unequal(%%event,CLOSE)
-    %%closechild = 1
-  end
-  dialog close
+  #DIALOG SHOWMODAL
+  DIALOG SHOW
+  dialog focus, Save
   exit
 
 
 :SaveBUTTON
+  %%newuser = @dlgtext(NUser)
+  %%newdrive = @dlgtext(NDrive)
+  %%newmove = @dlgtext(CHECK1) 
   # User name
   if @not(@null(%%newuser))
     if @unequal(%%sdeuser,%%newuser)
@@ -271,6 +318,9 @@
   end
   # Move unpacked files
   inifile write,main,move,%%newmove
+  dialog close
+  while @event()
+  wend
   goto EvLoop
 
 
@@ -278,13 +328,10 @@
   %%ext_in = @ext(%%file_in)
   %%name = @name(%%file_in)
   %%path = @path(%%file_in) 
-
-  #%%file_out = %%path%%name.%%ext_out
-
   dialog set, EDIT1, %%file_in
 
-  dialog set, TEXT4,
-  dialog hide, TEXT5
+  #dialog set, TEXT4,
+  #dialog hide, TEXT5
   exit
 
 
@@ -493,9 +540,6 @@
       goto EvLoop
     end
 
-    # Allow time for script to extract .pat file
-    #wait 10
-
     # Wait until script has extracted .pat file (timeout after 10 seconds)
     %C = 0
     repeat
@@ -520,6 +564,18 @@
         goto EvLoop
       end
     end
+
+
+    #%%pipe = @pipe()
+    #
+    #if @null(%%pipe)
+    #  dialog set, TEXT4, Finished
+    #else
+    #  dialog set, TEXT5, Finished with errors!
+    #  dialog show, TEXT5
+    #  info %%pipe ,
+    #end
+
   end
 
   # Move extracted pat/sdk folder to pat/sdk folder
@@ -534,6 +590,12 @@
     end
   end
   goto EvLoop
+
+
+# not working
+:install_wsl
+  run %%powershell wsl --install
+  exit
 
 
 :curdir_wsl
@@ -594,4 +656,43 @@
   until @winexists(%%windowid) @greater(%C,10)
   exit
 
+
+:Check for UpdatesMENU
+  %%currentversion = @verinfo(%0,V)
+  if @not(@null(%%powershell))
+    %%repo = 007revad/Syno_DSM_Extractor_GUI
+    # Set to cursor to wait
+    dialog cursor,wait
+    runh cmd /C curl.exe --silent @chr(34)https://api.github.com/repos/%%repo/releases/latest@chr(34) | findstr tag_name, pipe
+    %P = @pipe()
+    # Set to cursor to normal
+    dialog cursor
+
+    %S = @fsep()
+    option fieldsep,@chr(34)
+    parse "%A;%B;%V",%P
+
+    # Strip v from start of version
+    if @equal(v,@substr(%V,1))
+      %%latestversion = @substr(%V,2,@len(%V))
+    end
+
+    # Variables in Visual DialogScript are strings so we need to compare each part of the version!!!
+    option fieldsep,"."
+    parse "%A;%B;%C;%%currentbuild", %%currentversion
+    parse "%D;%E;%F;%%latestbuild", %%latestversion
+
+    title Check for Updates
+    if @greater(%%latestbuild,%%currentbuild)
+      if @ask(%V is available. @cr()@cr()Do you want to download it? )
+        shell open,https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
+      end
+    else
+      info You have the latest version. ,
+    end
+
+    title %%Title
+    option fieldsep,%S
+  end
+  goto EvLoop
 
