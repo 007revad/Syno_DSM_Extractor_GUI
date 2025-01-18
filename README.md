@@ -52,7 +52,7 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 ### Screenshots
 
-<!--- <p align="center">Description of image 1 goes here</p> --->
+<!--- <p align="center">Description of image goes here</p> --->
 <p align="center"><img src="/images/about.png"></p>
 
 <br>
@@ -86,6 +86,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 <p align="center"><img src="/images/extracted.png"></p>
 
 ### When installed via the setup.exe
+
+<br>
+
+<!--- <p align="center">Description of image goes here</p> --->
+<p align="center"><img src="/images/setup-finished.png"></p>
 
 <br>
 
