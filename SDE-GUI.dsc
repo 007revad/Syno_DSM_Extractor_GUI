@@ -5,17 +5,13 @@
 #    Contact:    https://github.com/007revad                                  #
 #    Copyright:  2025, 007revad                                               #
 #-----------------------------------------------------------------------------#
-# dave@Dave-PC:/mnt/c/Windows/System32$ cd /
-# dave@Dave-PC:/$ sudo chmod a+x /home/dave/sde/syno_archive_extractor.sh
-# [sudo] password for dave:
-# dave@Dave-PC:/$ sudo /home/dave/sde/syno_archive_extractor.sh
-#-----------------------------------------------------------------------------#
 
 # To Do
 # Add menu to install WSL (wsl --install in PowerShell admin mode) or install WSL during SDE-GUI installation
 # Change to use consoleio.dll?
 #
 # Done
+# Bug fix for UNC network paths
 # Added installer
 # Added Windows context menu (via installer)
 # Added .pat and .spk file assiciation (via installer)
@@ -134,8 +130,8 @@
     #  end
     #else
       DIALOG CREATE,%%Title,-1,0,264,130,NOMIN
-      DIALOG ADD,TEXT,TEXT1,20,20,,,Windows System for Linux is not installed!
-      DIALOG ADD,TEXT,TEXT2,47,20,24,,See
+      DIALOG ADD,TEXT,TEXT1wsl,20,20,,,Windows System for Linux is not installed!
+      DIALOG ADD,TEXT,TEXT2wsl,47,20,24,,See
       DIALOG ADD,EXTTEXT,URL,47,44,200,15,<A HREF="https://github.com/007revad/Syno_DSM_Extractor_GUI#installing-wsl-and-ubuntu">Installing WSL and Ubuntu</A>
       DIALOG ADD,BUTTON,BUTTON1,83,102,64,24,OK
       DIALOG SHOWMODAL
@@ -478,6 +474,7 @@
   #  3. Sets owner of extracted .pat or .spk folder
 
   # Copy .pat file to WSL
+  %%name = @name(%%file_in)
   file copy,%%file_in,%%driveletter:\home\%%sdeuser\sde\in\%%name.%%ext_in,CONFIRM,SHOWERRORS
   if @ok()
     # Open WSL shell to run script to extract .pat file
