@@ -1,3 +1,6 @@
+v1.1.1.22
+- Bug fix for UNC network paths.
+
 v1.1.0.21
 - Added an installer.
   - Added Windows context menu shortcuts (when installed with the installer).
