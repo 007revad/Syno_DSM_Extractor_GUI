@@ -8,7 +8,7 @@
 #define MyAppName "Syno DSM Extractor GUI"
 #define MyAppExeName "SDE-GUI"
 #define MyAppPublisher "007revad"
-#define MyAppVer "1.1.0"
+#define MyAppVer "1.1.1"
 ; https://stackoverflow.com/questions/49388942/extracting-application-version-number-using-inno-setup-but-excluding-the-fourth
 #define AppVerText() \
    ParseVersion(SetupSetting(SourcePath) + "SDE-GUI.exe", \
