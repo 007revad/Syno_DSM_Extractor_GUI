@@ -35,7 +35,7 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 5. When asked to create a username, type a username in lower case and press Enter.
 6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
-7. Open Windows File Explorer then right-click on Linux and select Map network drive...
+7. Open Windows File Explorer then click on Linux, right-click on Ubuntu and select Map network drive...
     <p align="left"><img src="/images/map-step1.png"></p>
 8. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
     <p align="left"><img src="/images/map-step2.png"></p>
