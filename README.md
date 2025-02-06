@@ -32,12 +32,12 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 3. Then you may need to reboot.
 4. Go to Windows Start Menu and click on Ubuntu.
     <p align="left"><img src="/images/open-ubuntu.png"></p>
-6. When asked to create a username, type a username in lower case and press Enter.
-7. When asked to create a password type a password and press Enter.
+5. When asked to create a username, type a username in lower case and press Enter.
+6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
-8. Open File Explorer (aka My PC) then right-click on Linux and select Map network drive...
+7. Open Windows File Explorer then right-click on Linux and select Map network drive...
     <p align="left"><img src="/images/map-step-1.png"></p>
-9. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
+8. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
     <p align="left"><img src="/images/map-step-2.png"></p>
 
 ### Download Syno DSM Extractor GUI
