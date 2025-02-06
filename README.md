@@ -36,9 +36,9 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
 7. Open Windows File Explorer then right-click on Linux and select Map network drive...
-    <p align="left"><img src="/images/map-step-1.png"></p>
+    <p align="left"><img src="/images/map-step1.png"></p>
 8. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
-    <p align="left"><img src="/images/map-step-2.png"></p>
+    <p align="left"><img src="/images/map-step2.png"></p>
 
 ### Download Syno DSM Extractor GUI
 
