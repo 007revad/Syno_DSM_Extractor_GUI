@@ -1,4 +1,4 @@
-v1.2.0.????????
+v1.2.0.33
 - Added "Extract To" option
 - Added setting for sudo password
 - Changed to automatically insert sudo password into WSL window
