@@ -32,7 +32,7 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 3. Then you may need to reboot.
 4. Go to Windows Start Menu and click on Ubuntu.
     <p align="left"><img src="/images/open-ubuntu.png"></p>
-5. When asked to create a username, type a username in lower case and press Enter.
+5. When asked to create a username, type a username and press Enter.
 6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
 7. Create the sde folder and set the permissions so any user can run Synology DSM Extractor.
