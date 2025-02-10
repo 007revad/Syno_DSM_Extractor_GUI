@@ -154,4 +154,3 @@ Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\shell\Extract\command"; ValueTy
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".pat"; ValueData: ""; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".spk"; ValueData: ""; Flags: uninsdeletekey
 
-
