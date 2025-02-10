@@ -87,6 +87,9 @@ if [[ -f "$scriptpath/finished" ]]; then
     fi
 fi
 
+# Set permissions on libraries so we can replace them later
+chmod 755 /sde/lib*
+
 # Move libraries from ~/sde/lib to /usr/lib
 echo "Checking for missing libraries"
 if ls "${scriptpath:?}/lib" | grep 'lib'; then
@@ -135,6 +138,7 @@ extract(){
     fi
 
     if [[ -d "${outpath}/$filename" ]]; then
+        processed=$((processed +1))
         if [[ "$(ls -A "${outpath}/$filename")" ]]; then
             #echo -e "Skipping non-empty directory: \n${outpath}/$filename"
             echo "Skipping non-empty directory: ${outpath}/$filename" |& tee -a "$logfile"
@@ -159,6 +163,7 @@ extract(){
     fi
 }
 
+processed="0"
 
 for archive in "${inpath}"/*; do
     if [[ -f "$archive" ]]; then
@@ -208,7 +213,11 @@ if [[ $user ]]; then
     chown -R "$user" "$outpath" |& tee -a "$logfile"
 fi
 
-echo -e "\nFinished" |& tee -a "$logfile"
+if [[ $processed == "0" ]]; then
+    echo -e "No files to extract" |& tee -a "$logfile"
+else
+    echo -e "\nFinished" |& tee -a "$logfile"
+fi
 
 # Create "finished" file so GUI knows when to close wsl window
 touch "$scriptpath/finished"
