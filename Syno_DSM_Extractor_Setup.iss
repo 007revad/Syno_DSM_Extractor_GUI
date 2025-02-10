@@ -8,8 +8,9 @@
 #define MyAppName "Syno DSM Extractor GUI"
 #define MyAppExeName "SDE-GUI"
 #define MyAppPublisher "007revad"
-#define MyAppVer "1.1.1"
+;#define MyAppVer "1.2.0"
 ; https://stackoverflow.com/questions/49388942/extracting-application-version-number-using-inno-setup-but-excluding-the-fourth
+; https://groups.google.com/g/innosetup/c/9eEQkKaPFZs
 #define AppVerText() \
    ParseVersion(SetupSetting(SourcePath) + "SDE-GUI.exe", \
      Local[0], Local[1], Local[2], Local[3]), \
@@ -113,7 +114,7 @@ Source: *.dll; DestDir: {sys}; Flags: sharedfile replacesameversion 32bit restar
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}.exe; Comment: {#MyAppDescription}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Comment: Uninstall {#MyAppName}
-Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: quicklaunchicon; Comment: {#MyAppDescription}
+;Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: quicklaunchicon; Comment: {#MyAppDescription}
 Name: {commondesktop}\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: desktopicon; Comment: {#MyAppDescription}
 Name: {group}\{#MyAppName} Webpage; Filename: "https://github.com/007revad/Syno_DSM_Extractor_GUI"
 Name: {group}\{#MyAppName} Support; Filename: "https://github.com/007revad/Syno_DSM_Extractor_GUI/issues"
@@ -147,8 +148,10 @@ Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk"; ValueType: string; ValueName:
 Root: HKA; Subkey: "Software\Classes\SDE-GUI.pat\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName}.exe,1"
 Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\{#MyAppExeName}.exe,2"
 
-Root: HKA; Subkey: "Software\Classes\SDE-GUI.pat\shell\extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}.exe"" ""%1"""
-Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\shell\extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}.exe"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\SDE-GUI.pat\shell\Extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}.exe"" ""%1"""
+Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\shell\Extract\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#MyAppExeName}.exe"" ""%1"""
 
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".pat"; ValueData: ""; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".spk"; ValueData: ""; Flags: uninsdeletekey
+
+
