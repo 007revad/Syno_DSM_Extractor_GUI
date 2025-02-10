@@ -7,17 +7,17 @@ import os
 
 _libcodesign = ctypes.CDLL("libsynocodesign.so")
 
-# synoarchive_init funtion prototype
+# synoarchive_init function prototype
 _synoarchive_init = _libcodesign.synoarchive_init
 _synoarchive_init.argtypes = (ctypes.c_char_p,)
 _synoarchive_init.restype = ctypes.c_void_p
 
-# synoarchive_open_with_keytype funtion prototype
+# synoarchive_open_with_keytype function prototype
 _synoarchive_open = _libcodesign.synoarchive_open_with_keytype
 _synoarchive_open.argtypes = (ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint)
 _synoarchive_open.restype = ctypes.c_bool
 
-# synoarchive_extract_multiple funtion prototype
+# synoarchive_extract_multiple function prototype
 _synoarchive_extract_multiple = _libcodesign.synoarchive_extract_multiple
 _synoarchive_extract_multiple.argtypes = (ctypes.c_void_p, ctypes.POINTER(ctypes.c_char_p), ctypes.c_uint)
 _synoarchive_extract_multiple.restype = ctypes.c_bool
