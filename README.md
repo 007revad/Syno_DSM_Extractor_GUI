@@ -35,9 +35,17 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 5. When asked to create a username, type a username in lower case and press Enter.
 6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
-7. Open Windows File Explorer then click on Linux, right-click on Ubuntu and select Map network drive...
+7. Create the sde folder and set the permissions so any user can run Synology DSM Extractor.
+    - Run the following commands, one line at a time: 
+    ```
+    cd /
+    sudo mkdir /sde
+    sudo chmod 777 /sde
+    ```
+    <img src="/images/create-sde-dir.png">
+8. Open Windows File Explorer then click on Linux, right-click on Ubuntu and select Map network drive...
     <p align="left"><img src="/images/map-step1.png"></p>
-8. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
+9. Select a drive letter and tick "Reconnect at sign-in" then click Finish.
     <p align="left"><img src="/images/map-step2.png"></p>
 
 ### Download Syno DSM Extractor GUI
