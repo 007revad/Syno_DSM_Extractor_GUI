@@ -24,9 +24,9 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 ### Installing WSL and Ubuntu
 
 1. Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting "Run as administrator"
-2. Enter the wsl --install command:
+2. Enter the following command:
     ```
-    wsl --install
+    wsl --install -d Ubuntu
     ```
     This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
 3. Then you may need to reboot.
