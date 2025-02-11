@@ -114,7 +114,7 @@ Source: *.dll; DestDir: {sys}; Flags: sharedfile replacesameversion 32bit restar
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}.exe; Comment: {#MyAppDescription}
 Name: {group}\{cm:UninstallProgram,{#MyAppName}}; Filename: {uninstallexe}; Comment: Uninstall {#MyAppName}
-;Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: quicklaunchicon; Comment: {#MyAppDescription}
+Name: {userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: quicklaunchicon; Comment: {#MyAppDescription}
 Name: {commondesktop}\{#MyAppFolder}; Filename: {app}\{#MyAppExeName}.exe; Tasks: desktopicon; Comment: {#MyAppDescription}
 Name: {group}\{#MyAppName} Webpage; Filename: "https://github.com/007revad/Syno_DSM_Extractor_GUI"
 Name: {group}\{#MyAppName} Support; Filename: "https://github.com/007revad/Syno_DSM_Extractor_GUI/issues"
