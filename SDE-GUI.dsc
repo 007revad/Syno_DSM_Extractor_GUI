@@ -6,35 +6,44 @@
 #    Copyright:  2025, 007revad                                               #
 #-----------------------------------------------------------------------------#
 # To Do
-# Add menu to install WSL (wsl --install in PowerShell admin mode) or install WSL during SDE-GUI installation
-# Cleanup files in U:\home\dave\sde\in if error
+# Add menu to install WSL (wsl --install in PowerShell admin mode) or install WSL during SDE-GUI installation.
+# Cleanup files in U:\home\dave\sde\in if error.
+# Finish "Show WSL window" menu tickbox so WSL window is hidden if tickbox not ticked.
 #
-# Fix sending file to already open window
 # Change to show pat/spk source folder as target when move = 1
-# Move check box to main window
 #
 # Done
-# Added "Extract To" option
-# Added setting for sudo password
-# Changed to automatically insert sudo password into WSL window
-# Bug fix for when "Failed to cd /" when Windows username and Ubuntu user name are different
-# Bug fix for sometimes being unable to access Ubuntu /home/<user>/sde folder
-# Changed to show "No files to extract" instead of "Finished" if there was nothing extracted
+# Moved "Extract to same folder as pat/spk file" checkbox to main window.
+# Added View Log menu (in Help menu).
+# Added setting to check for newer version when opening Syno DSM Extractor GUI.
+# Now creates in, out and lib folders if they are missing.
+# Bug fix for sending file to already open window.
 #
-# Added support for UNC network paths
-# Added installer
-# Added Windows context menu (via installer)
-# Added .pat and .spk file assiciation (via installer)
-# Added Check for Updates menu option
-# Changed to show how to install WSL if it's not installed
-# Changed to auto detect wsl Ubuntu drive letter
-# Changed so you don't need to copy wsl.exe to the same folder as SDE.exe
-# Changed so only 1 instance can run at a time
-# Changes to send %1 to open SDE-GUI window if already open
+# Added "Extract To" option.
+# Added setting for sudo password.
+# Changed to automatically insert sudo password into WSL window.
+# Bug fix for when "Failed to cd /" when Windows username and Ubuntu user name are different.
+# Bug fix for sometimes being unable to access Ubuntu /home/<user>/sde folder.
+# Changed to show "No files to extract" instead of "Finished" if there was nothing extracted.
+#
+# Added support for UNC network paths.
+# Added installer.
+# Added Windows context menu (via installer).
+# Added .pat and .spk file assiciation (via installer).
+# Added Check for Updates menu option.
+# Changed to show how to install WSL if it's not installed.
+# Changed to auto detect wsl Ubuntu drive letter.
+# Changed so you don't need to copy wsl.exe to the same folder as SDE.exe.
+# Changed so only 1 instance can run at a time.
+# Changes to send %1 to open SDE-GUI window if already open.
+
+
+# test file
+#%1 = F:\extracted\synology_v1000_1821+.pat
 
 
   #define function,curdir_wsl
-  #define command,Settings,CheckSettings,open_wsl
+  #define command,Settings,CheckSettings,open_wsl,DialogState,CheckMain
 
   #resource add,icon,images\dsm_48.ico
   #resource add,icon,images\pkg_48.ico
@@ -75,20 +84,37 @@
     end
   end
 
+
   # Check if already running
   if @winexists(#%%MainClass)
     window activate,#%%MainClass
     if @file(%%file_in)
       # If double clicked .pat/spk file send to already open SDE-GUI window
-      %%wintop = @winpos(#%%MainClass,T)
-      %%winleft = @winpos(#%%MainClass,L)
-      %%texttop = @sum(%%wintop,64)
-      %%textleft = @sum(%%winleft,73)
-      %%editbox = @winatpoint(%%textleft,%%texttop)
-      window settext,%%editbox,%%file_in
+      %%Parent = @winexists(#%%MainClass)
+      if %%Parent
+        %%Child = @window(%%Parent,CHILD) 
+
+        # Find first #TVDSEdit (last #TVDSEdit in dialog)
+        if @not(@equal(@winclass(%%Child),#TVDSEdit))
+          repeat
+            # This may result in a endless loop if you can't find the window...
+            %%Child = @window(%%Child,NEXT)
+          until @equal(@winclass(%%Child),#TVDSEdit)
+        end
+
+        # Find second #TVDSEdit (first #TVDSEdit in dialog)
+        repeat
+          # This may result in a endless loop if you can't find the window...
+          %%Child = @window(%%Child,NEXT)
+        until @equal(@winclass(%%Child),#TVDSEdit) 
+
+        # Set %%file_in text in the Select File Editbox
+        window settext,%%Child,%%file_in
+      end
     end
     stop
   end
+
 
   # Inifile
   if @file(@windir(Local AppData)\%%Company\Syno DSM Extractor GUI,D)
@@ -98,7 +124,7 @@
   end
   inifile open, %%inifile
   if @not(@ok())
-    warn Failed to open SDE-GUI.ini
+    warn Failed to open SDE-GUI.ini ,
     goto Close
   end
 
@@ -127,6 +153,14 @@
   #  end
   #end
 
+
+  # Check for newer version if updates = 1
+  if @equal(@iniread(main, updates),1)
+    %%startcheck = "yes"
+    gosub Check for Updates
+  end
+
+
   # Check wsl is installed
   # This is a 32 bit app so we need to use sysnative instead of system32
   if @not(@file(@windir()\sysnative\wsl.exe))
@@ -150,6 +184,11 @@
     #end
   end
 
+  # Set ONTOP for testing in the IDE
+  if @sysinfo(inide)
+    window ontop,#%%MainClass
+  end
+
   # Set Ubuntu drive letter if not already set
   if @null(@iniread(main, drive))
     if @not(@null(%%powershell))
@@ -166,29 +205,50 @@
     %%out_path = %x
   end
 
+  # Get "Extract to" checkbox state
+  %%move = @iniread(main, move)
+
   # Main window
-  DIALOG CREATE,%%Title - v%%Version,-1,0,560,150,CLASS SDEmain,DRAGDROP,SAVEPOS
-  DIALOG ADD,MENU,Settings,Settings|Install Scripts|Install Libraries
-  DIALOG ADD,MENU,Help,Check for Updates|About
+  # Dialog menu items with a tickbox mut NOT be named
+  #  ShowWSLMENU:Show WSL window  does NOT work
+  #  Show WSL window              works
+  DIALOG CREATE,%%Title - v%%Version,-1,0,560,155,CLASS %%MainClass,DRAGDROP,SAVEPOS
+  DIALOG ADD,MENU,Settings,Settings|-|Install Scripts|Install Libraries
+  DIALOG ADD,MENU,Help,ViewLogMENU:View Log|Show WSL window|-|Check for Updates|About
   DIALOG ADD,TEXT,TEXT1,20,18,50,18,In File
-  DIALOG ADD,EDIT,EDIT1,18,75,385,18,%%file_in,,READONLY
+  #DIALOG ADD,EDIT,EDIT1,18,75,385,18,%%file_in,,READONLY
+  DIALOG ADD,EDIT,EDIT1,18,75,385,18,,,READONLY
   DIALOG ADD,BUTTON,Select,15,468,70,24,Select File
   DIALOG ADD,TEXT,TEXT2,60,18,50,18,Out Path
   DIALOG ADD,EDIT,EDIT2,58,75,385,18,%%out_path,,READONLY
   DIALOG ADD,BUTTON,Target,55,468,70,24,Extract To
-  DIALOG ADD,BUTTON,Extract,100,240,74,24,Extract
-  dialog disable, Extract
+  DIALOG ADD,CHECK,CHECKmain,97,75,210,18,Extract to same folder as pat/spk file,%%move,,CLICK
+  DIALOG ADD,BUTTON,Extract,95,468,70,24,Extract
+  dialog disable,Extract
+  DIALOG ADD,STATUS,STATUS1,[80C]|[400C]|[80C]
   DIALOG SHOW
-  dialog focus, Select
+  dialog focus,Select
 
-  goto TIMER
+  # Reset cursor in case app crashed last time
+  dialog cursor,default
+
+  # Set ONTOP for testing in the IDE
+  if @sysinfo(inide)
+    window ontop,#%%MainClass
+  end
+
+  CheckMain
 
 
 :EvLoop
   if @not(@winexists(#SDEset))
     CheckSettings
+    if @unequal(%%closechild,1)
+      DialogState
+    end
   end
-  wait event, 0.2
+#  wait event, 0.2
+  wait event
   # %V is event, %W is dialog number that issued it (0,1,2,etc.)
   parse "%V;%W", @event(D) 
   if @both(@equal(%V,CLOSE),@winexists(#SDEset))
@@ -205,7 +265,12 @@
 
 
 :TIMER
-  if @not(@winexists(#SDEset))
+  CheckMain
+  gosub DialogState
+  goto EvLoop 
+
+:DialogState
+  if @both( @not(@winexists(#SDEset)),@not(@winexists(#SDEabout)) )
     # Extract Button
     %%file_in = @dlgtext(EDIT1)
     %%ext_in = @ext(%%file_in)
@@ -218,28 +283,42 @@
     if @equal(%%ext_in,pat) @equal(%%ext_in,spk)
       if @both(@not(@null(%%sdeuser)),@not(@null(%%driveletter)))
         dialog enable, Extract
-        dialog focus, Extract
+        #if @unequal(@focus(),CHECKmain)
+        #  dialog focus, Extract
+        #end
       else
         dialog disable, Extract
-        dialog focus, Select
+        #if @unequal(@focus(),CHECKmain)
+        #  dialog focus, Select
+        #end
       end
     else
       dialog disable, Extract
-      dialog focus, Select
+      #if @unequal(@focus(),CHECKmain)
+      #  dialog focus, Select
+      #end
+    end
+
+    # View Log
+    %%driveletter = @iniread(main, drive)
+    if @file(%%driveletter:\sde\sde.log)
+      dialog enable, ViewLogMENU
+    else
+      dialog disable, ViewLogMENU
     end
 
     # Extract To
-    if @equal(@iniread(main, move),1)
-      dialog disable, Target
-      dialog disable, EDIT2
-      dialog disable, TEXT2
-    else
-      dialog enable, Target
-      dialog enable, EDIT2
-      dialog enable, TEXT2
-    end
+#    if @equal(@iniread(main, move),1)
+#      dialog disable, Target
+#      dialog disable, EDIT2
+#      dialog disable, TEXT2
+#    else
+#      dialog enable, Target
+#      dialog enable, EDIT2
+#      dialog enable, TEXT2
+#    end
   end
-  goto EvLoop 
+  exit
 
 
 :Close
@@ -256,7 +335,7 @@
 
 :ABOUTMENU
 :ABOUT Syno DSM Extractor GUIMENU
-  DIALOG CREATE,About Syno DSM Extractor GUI,-1,0,440,160,NOMIN
+  DIALOG CREATE,About Syno DSM Extractor GUI,-1,0,440,160,CLASS SDEabout,NOMIN
   DIALOG ADD,STYLE,STYLEHEADING,,14,B,,
   DIALOG ADD,BITMAP,BITMAP1,15,20,32,32,#sde-32.ico
   DIALOG ADD,TEXT,Heading,16,70,,,Syno DSM Extractor GUI,,STYLEHEADING
@@ -270,6 +349,60 @@
   while @event()
   wend
   goto EvLoop
+
+
+:VIEWLOGMENU
+  shell open,%%driveletter:\sde\sde.log
+  goto EvLoop
+
+
+:SHOW WSL WINDOWMENU
+  # Dialog menu items with a tickbox mut NOT be named
+  #  ShowWSLMENU:Show WSL window  does NOT work
+  #  Show WSL window              works
+  if @equal(@regread(default,,Show WSL window),1)
+    # Remove ticked checkbox from Show WSL window menu
+    registry write,default,,Show WSL window,
+  else
+    # Add ticked checkbox to Show WSL window menu
+    registry write,default,,Show WSL window,1
+  end
+  goto EvLoop
+
+
+:CHECKMAINCLICK
+  CheckMain
+  goto EvLoop
+
+:CheckMain
+  # Move unpacked files
+  %%move = @dlgtext(CHECKmain) 
+  if @unequal(%%move,@iniread(main, move))
+    inifile write,main,move,%%move
+  end
+#  %%current_target = @dlgtext(EDIT1)
+  %f = @dlgtext(EDIT1)
+  %p = @substr(@path(%f),1,-1)
+  %s = @iniread(main, saveto)
+  if @unequal(%p,%s)
+    if @equal(%%move,1)
+      dialog set, EDIT2, %p
+    else
+      dialog set, EDIT2, %s
+    end
+  end
+
+  # Extract To set
+  if @equal(@iniread(main, move),1)
+    dialog disable, Target
+    dialog disable, EDIT2
+    dialog disable, TEXT2
+  else
+    dialog enable, Target
+    dialog enable, EDIT2
+    dialog enable, TEXT2
+  end
+  exit
 
 
 :SETTINGSMENU
@@ -308,7 +441,8 @@
     %%sdepass = @encrypt(%s, 8027609167)
   end
   %%driveletter = @iniread(main, drive)
-  %%move = @iniread(main, move,1)
+#  %%move = @iniread(main, move,1)
+  %%updates = @iniread(main, updates,1)
 
   DIALOG CREATE,Settings,-1,0,245,270,CLASS SDEset,NOMIN,ONTOP
   # User
@@ -324,8 +458,10 @@
   DIALOG ADD,EDIT,NDrive,76,140,84,18,,Enter Ubuntu's drive letter
   DIALOG SET,NDrive,%%driveletter
   DIALOG ADD,BITMAP,BITMAP1,105,20,203,59,#drive-letter.bmp
-  # Move
-  DIALOG ADD,CHECK,CHECK1,181,20,210,18,Extract to same folder as pat/spk file,%%move
+#  # Move
+#  DIALOG ADD,CHECK,CHECK1,181,20,210,18,Extract to same folder as pat/spk file,%%move
+  # Check for updates
+  DIALOG ADD,CHECK,CHECK1,181,20,210,18,Check for updates when opening,%%updates
   DIALOG ADD,BUTTON,Save,222,90,64,24,Save
   DIALOG SHOW
   dialog focus, Save
@@ -336,7 +472,8 @@
   %%newuser = @dlgtext(NUser)
   %%newpass = @dlgtext(NPwd)
   %%newdrive = @dlgtext(NDrive)
-  %%newmove = @dlgtext(CHECK1) 
+#  %%newmove = @dlgtext(CHECK1) 
+  %%newupdates = @dlgtext(CHECK1) 
   # User name
   if @not(@null(%%newuser))
     if @unequal(%%sdeuser,%%newuser)
@@ -355,8 +492,10 @@
       inifile write,main,drive,@upper(%%newdrive)
     end
   end
-  # Move unpacked files
-  inifile write,main,move,%%newmove
+#  # Move unpacked files
+#  inifile write,main,move,%%newmove
+  # Check for updates
+  inifile write,main,updates,%%newupdates
   dialog close
   while @event()
   wend
@@ -367,7 +506,9 @@
   %%ext_in = @ext(%%file_in)
   %%name = @name(%%file_in)
   %%path = @path(%%file_in) 
-  dialog set, EDIT1, %%file_in
+  dialog set,EDIT1,%%file_in
+  # Clear status bar
+  dialog set,status1,@tab()
   exit
 
 
@@ -395,7 +536,7 @@
   if @ok()
     %%out_path = %p
     inifile write,main,saveto,%%out_path
-    dialog set, EDIT2, %%out_path
+    dialog set,EDIT2,%%out_path
   end
   goto Timer
 
@@ -448,6 +589,15 @@
   #----------------------------------------------------------------------------
   # syno_extract_archive.sh moves libraries from \sde\lib to \usr\lib
   #----------------------------------------------------------------------------
+  # Create lib directory if missing
+  if @not(@file(%%driveletter:\sde\lib,D))
+    directory create,%%driveletter:\sde\lib
+    if @not(@ok())
+      warn Failed to create %%driveletter:\sde\lib ,
+      goto EvLoop
+    end
+  end
+
   # Get list of libraries that need to be installed in WSL
   %%installables = @new(LIST)
   %%toinstall = @new(LIST)
@@ -524,15 +674,35 @@
   #  3. Sets owner of extracted .pat or .spk folder
   # sae.py must run as sudo so we must sudo in WSL
   #----------------------------------------------------------------------------
+  # Clear status bar
+  dialog set,status1,@tab()
+
+  # Create in and out directories if missing
+  if @not(@file(%%driveletter:\sde\in,D))
+    directory create,%%driveletter:\sde\in
+    if @not(@ok())
+      warn Failed to create %%driveletter:\sde\in ,
+      goto EvLoop
+    end
+  end
+  if @not(@file(%%driveletter:\sde\out,D))
+    directory create,%%driveletter:\sde\out
+    if @not(@ok())
+      warn Failed to create %%driveletter:\sde\out ,
+      goto EvLoop
+    end
+  end
 
   # Copy .pat or .spk file to WSL
   %%name = @name(%%file_in)
-
   file copy,%%file_in,%%driveletter:\sde\in\%%name.%%ext_in,CONFIRM,SHOWERRORS
   if @ok()
     # Open WSL shell to run script to extract .pat or .spk file
     # This is a 32 bit app so we need to use sysnative instead of system32
-    shell open,@windir()\sysnative\wsl.exe
+#    if @equal(@regread(default,,Show WSL window),1)
+      shell open,@windir()\sysnative\wsl.exe
+#    else
+#    end
     if @not(@ok())
       warn Failed to open wsl window! ,
       goto EvLoop
@@ -541,7 +711,7 @@
 
     # When .pat or .spk file is local
     # Get window id "user@hostname: /mnt/<drive-letter>/<path>
-    %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(47)@curdir_wsl() 
+    %%windowid = %%sdeuser@chr(64)%%hostname@chr(58) @chr(47)@curdir_wsl() 
 
     # Wait until WSL window has opened (timeout after 2 seconds)
     %C = 0
@@ -553,8 +723,8 @@
 
     # When .pat pr .spk file is UNC network path
     if @not(@winexists(%%windowid))
-      # Get window id "user@hostname: ~/
-      %%windowid = %%username@chr(64)%%hostname@chr(58) @chr(126) 
+      # Get window id "user@hostname: ~
+      %%windowid = %%sdeuser@chr(64)%%hostname@chr(58) @chr(126) 
 
       # Wait until WSL window has opened (timeout after 2 seconds)
       %C = 0
@@ -568,6 +738,8 @@
     # Elevate to sudo
     window send,%%windowid,sudo -s@key(ENTER), wait
     if @not(@ok())
+      # Bring main window to the front so warning is not hidden behind WSL window
+      window activate,#%%MainClass
       warn Failed to sudo! ,
       goto EvLoop
     end
@@ -576,6 +748,8 @@
     if @not(@null(%%sdepass))
       window send,%%windowid,%%sdepass@key(ENTER), wait
       if @not(@ok())
+       # Bring main window to the front so warning is not hidden behind WSL window
+        window activate,#%%MainClass
         warn Failed to enter password! ,
         goto EvLoop
       end
@@ -593,7 +767,9 @@
     # Elevate to sudo and CD to /
     window send,%%windowid,cd @chr(47)@key(ENTER), wait
     if @not(@ok())
-      warn Failed to cd to /! ,
+      # Bring main window to the front so warning is not hidden behind WSL window
+      window activate,#%%MainClass
+      warn Failed to cd to / ,
       goto EvLoop
     end
     #wait 2
@@ -614,7 +790,9 @@
     # Make sure bash script is executable
     window send,%%windowid,chmod a+x %%script@key(ENTER), wait
     if @not(@ok())
-      warn Failed to chmod a+x syno_archive_extractor.sh! ,
+      # Bring main window to the front so warning is not hidden behind WSL window
+      window activate,#%%MainClass
+      warn Failed to chmod a+x syno_archive_extractor.sh ,
       goto EvLoop
     end
 
@@ -622,7 +800,9 @@
     #window send,%%windowid,%%script %%sdeuser @chr(62) %%logfile@key(ENTER), wait
     window send,%%windowid,%%script %%sdeuser@key(ENTER), wait
     if @not(@ok())
-      warn Failed to run syno_archive_extractor.sh! ,
+      # Bring main window to the front so warning is not hidden behind WSL window
+      window activate,#%%MainClass
+      warn Failed to run syno_archive_extractor.sh ,
       goto EvLoop
     end
 
@@ -635,6 +815,23 @@
 
     # Bring main window to the front so "Do you want close" is not hidden behind WSL window
     window activate,#SDEmain
+
+    # Set status bar
+    if @file(%%driveletter:\sde\okay)
+      dialog set,STATUS1,@tab()Finished
+    elsif @file(%%driveletter:\sde\nofiles)
+      dialog set,STATUS1,@tab()No files to extract
+    end
+
+#    # Show log
+#    if @file(%%driveletter:\sde\sde.log)
+#      %L = @new(list)
+#      list loadfile,%L,%%driveletter:\sde\sde.log
+#      if @ok()
+#        info @text(%L) ,
+#      end
+#      list close,%L
+#    end
 
     # Exit WSL shell
     if @winexists(%%windowid)
@@ -698,15 +895,25 @@
 
 
 :Check for UpdatesMENU
+  gosub Check for Updates
+  %%dialogshowing = "yes"
+  goto EvLoop
+
+:Check for Updates
   %%currentversion = @verinfo(%0,V)
   if @not(@null(%%powershell))
     %%repo = 007revad/Syno_DSM_Extractor_GUI
-    # Set to cursor to wait
-    dialog cursor,wait
+    if %%dialogshowing
+      # Set to cursor to wait
+      dialog cursor,wait
+    end
     runh cmd /C curl.exe --silent @chr(34)https://api.github.com/repos/%%repo/releases/latest@chr(34) | findstr tag_name, pipe
     %P = @pipe()
-    # Set to cursor to normal
-    dialog cursor
+    if %%dialogshowing
+      # Set to cursor to normal
+      dialog cursor
+    end
+    %%dialogshowing =
 
     %S = @fsep()
     option fieldsep,@chr(34)
@@ -728,11 +935,16 @@
         shell open,https://github.com/007revad/Syno_DSM_Extractor_GUI/releases
       end
     else
-      info You have the latest version. ,
+      # Only show "You have the latest version" if menu item clicked
+      if %%startcheck
+        %%startcheck =
+      else
+        info You have the latest version. ,
+      end
     end
 
     title %%Title
     option fieldsep,%S
   end
-  goto EvLoop
+  exit
 

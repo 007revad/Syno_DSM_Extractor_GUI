@@ -1,15 +1,26 @@
+v1.3.0.34
+- Added option to automatically check for newer version when Syno DSM Extractor GUI is opened.
+- Added View Log menu (in Help menu).
+- Added status bar to show the result.
+- Moved "Extract to same folder as pat/spk file" checkbox to main window.
+- Changed to ensure warnings are not hidden behind the WSL window.
+- Now creates in, out and lib folders if they are missing.
+- Bug fix for "Failed to cd /" when Windows username and Ubuntu user name are different.
+- Bug fix for installer not creating Quick Launch shortcut when selected.
+- Bug fix for sending file to already open window.
+
 v1.2.0.33
-- Added "Extract To" option
-- Added setting for sudo password
-- Changed to automatically insert sudo password into WSL window
-- Bug fix for "Failed to cd /" when Windows username and Ubuntu user name are different
-- Bug fix for sometimes being unable to access Ubuntu /home/<user>/sde folder
-- Changed to show "No files to extract" instead of "Finished" if there was nothing extracted
+- Added "Extract To" option.
+- Added setting for sudo password.
+- Changed to automatically insert sudo password into WSL window.
+- Bug fix for "Failed to cd /" when Windows username and Ubuntu user name are different.
+- Bug fix for sometimes being unable to access Ubuntu /home/<user>/sde folder.
+- Changed to show "No files to extract" instead of "Finished" if there was nothing extracted.
 
 If you update to this version from an older version you need to:
 1. Open the Ubuntu WSL shell window and Enter the following command and press Enter:
    sudo mkdir -m 777 /sde
-2. Run Syno_DSM_Extractor_GUI then from Settings: Install Scripts and Install Libraries
+2. Run Syno_DSM_Extractor_GUI then from Settings: Install Scripts and Install Libraries.
 
 v1.1.1.22
 - Bug fix for UNC network paths.

@@ -24,9 +24,9 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 ### Installing WSL and Ubuntu
 
 1. Open PowerShell or Windows Command Prompt in administrator mode by right-clicking and selecting "Run as administrator"
-2. Enter the wsl --install command:
+2. Enter the following command:
     ```
-    wsl --install
+    wsl --install -d Ubuntu
     ```
     This command will enable the features necessary to run WSL and install the Ubuntu distribution of Linux.
 3. Then you may need to reboot.
@@ -35,9 +35,9 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
 5. When asked to create a username, type a username and press Enter.
 6. When asked to create a password type a password and press Enter.
     - I use the same username and password that I use in Windows, just to make it easier.
-7. Create the sde folder and set the permissions so any user can run Synology DSM Extractor.
+7. Create the sde folders and set the permissions so any user can run Synology DSM Extractor.
     ```
-    sudo mkdir -m 777 /sde
+    sudo mkdir -m 777 -p /sde/in /sde/out /sde/lib
     ```
 8. Open Windows File Explorer then click on Linux, right-click on Ubuntu and select Map network drive...
     <p align="left"><img src="/images/map-step1.png"></p>
@@ -79,6 +79,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
+<p align="center">Ready to extract DSM pat file to same folder</p>
+<p align="center"><img src="/images/gui_same_folder.png"></p>
+
+<br>
+
 <p align="center">Ready to extract package spk file</p>
 <p align="center"><img src="/images/gui-spk.png"></p>
 
@@ -89,13 +94,13 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
-<p align="center">Settings dialog</p>
-<p align="center"><img src="/images/settings.png"></p>
+<p align="center">Help menu</p>
+<p align="center"><img src="/images/help-menu.png"></p>
 
 <br>
 
-<p align="center">Enter your Ubuntu password</p>
-<p align="center"><img src="/images/sudo_pwd.png"></p>
+<p align="center">Settings dialog</p>
+<p align="center"><img src="/images/settings.png"></p>
 
 <br>
 

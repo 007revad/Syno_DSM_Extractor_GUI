@@ -3,7 +3,7 @@
 # Modified version of syno_archive_extractor.sh for
 # Syno DSM Extractor GUI by 007revad
 # https://github.com/007revad/Syno_DSM_Extractor_GUI
-#          v1.0 2025-01-10
+#          v1.3 2025-02-12
 #----------------------------------------------------------
 # syno_archive_extractor.sh by 007revad
 # https://github.com/007revad/Synology_Archive_Extractor
@@ -34,17 +34,18 @@ inpath="$scriptpath/in"
 outpath="$scriptpath/out"
 
 # Location of the sae.py script
-#pyscript="/bin/sae.py"
 pyscript="$scriptpath/sae.py"
 
 # Location of logfile
 logfile="$scriptpath/sde.log"
 
+echo -n "" > "$logfile"
+
 # User to own extracted files
 if [[ $1 ]]; then
     user="$1"
 else
-    echo "Username argument missing!"
+    echo -e "\nUsername argument missing!" |& tee -a "$logfile"
     exit
 fi
 
@@ -52,7 +53,7 @@ fi
 
 # Check script is running as root
 if [[ $( whoami ) != "root" ]]; then
-    echo "This script must be run as root or sudo." |& tee -a "$logfile"
+    echo -e "\nThis script must be run as root or sudo." |& tee -a "$logfile"
     exit
 fi
 
@@ -60,17 +61,17 @@ fi
 if [[ -f "$pyscript" ]]; then
     # Make sure sae.py script is executable
     if ! chmod a+x "$pyscript"; then
-        echo "Failed to set sae.py as executable!" |& tee -a "$logfile"
+        echo -e "\nFailed to set sae.py as executable!" |& tee -a "$logfile"
         exit
     fi
 else
-    echo "$pyscript not found!"
+    echo -e "\n$pyscript not found!" |& tee -a "$logfile"
     exit
 fi
 
 # Check inpath and outpath directories exist
 if [[ ! -d "${inpath}" ]]; then
-    echo "Directory not found! ${inpath}" |& tee -a "$logfile"
+    echo -e "\nDirectory not found! ${inpath}" |& tee -a "$logfile"
     exit
 fi
 if [[ ! -d "${outpath}" ]]; then
@@ -81,9 +82,29 @@ fi
 if [[ -f "$scriptpath/finished" ]]; then
     rm "$scriptpath/finished" 
     if [[ -f "$scriptpath/finished" ]]; then
-        echo "Failed to delete $scriptpath/finished" |& tee -a "$logfile"
+        echo -e "\nFailed to delete $scriptpath/finished" |& tee -a "$logfile"
     #else
-    #    echo "Deleted $scriptpath/finished"
+    #    echo -e "\nDeleted $scriptpath/finished"
+    fi
+fi
+
+# Remove old "okay" file
+if [[ -f "$scriptpath/okay" ]]; then
+    rm "$scriptpath/okay" 
+    if [[ -f "$scriptpath/okay" ]]; then
+        echo -e "\nFailed to delete $scriptpath/okay" |& tee -a "$logfile"
+    #else
+    #    echo -e "\nDeleted $scriptpath/okay"
+    fi
+fi
+
+# Remove old "nofiles" file
+if [[ -f "$scriptpath/nofiles" ]]; then
+    rm "$scriptpath/nofiles" 
+    if [[ -f "$scriptpath/nofiles" ]]; then
+        echo -e "\nFailed to delete $scriptpath/nofiles" |& tee -a "$logfile"
+    #else
+    #    echo -e "\nDeleted $scriptpath/nofiles"
     fi
 fi
 
@@ -91,10 +112,9 @@ fi
 chmod 755 /sde/lib*
 
 # Move libraries from ~/sde/lib to /usr/lib
-echo "Checking for missing libraries"
 if ls "${scriptpath:?}/lib" | grep 'lib'; then
+    echo -e "\nInstalling libraries to /usr/lib" |& tee -a "$logfile"
     mv "${scriptpath:?}/lib/"lib* /usr/lib
-    echo "Installed libraries"
 fi
 
 
@@ -140,7 +160,6 @@ extract(){
     if [[ -d "${outpath}/$filename" ]]; then
         processed=$((processed +1))
         if [[ "$(ls -A "${outpath}/$filename")" ]]; then
-            #echo -e "Skipping non-empty directory: \n${outpath}/$filename"
             echo "Skipping non-empty directory: ${outpath}/$filename" |& tee -a "$logfile"
         else
             # Run sae.py and capture it's stdout
@@ -214,9 +233,11 @@ if [[ $user ]]; then
 fi
 
 if [[ $processed == "0" ]]; then
-    echo -e "No files to extract" |& tee -a "$logfile"
+    echo -e "No files to extract \n" |& tee -a "$logfile"
+    echo "No files to extract" > "$scriptpath/nofiles"
 else
-    echo -e "\nFinished" |& tee -a "$logfile"
+    echo -e "Finished \n" |& tee -a "$logfile"
+    echo "Finished" > "$scriptpath/okay"
 fi
 
 # Create "finished" file so GUI knows when to close wsl window

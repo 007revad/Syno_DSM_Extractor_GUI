@@ -4,11 +4,11 @@ IconFile=#images\sde-32.ico
 InfoVersion=1
 CompanyName=007revad
 FileDescription=Syno DSM Extractor GUI
-FileVersion=1.2.0.33
+FileVersion=1.3.0.34
 LegalCopyright=Copyright © 2025 007revad
 OriginalFilename=SDE-GUI.exe
 ProductName=Syno DSM Extractor GUI
-ProductVersion=1.2.0.0
+ProductVersion=1.3.0.0
 AutoVerInc=1
 Include Manifest=1
 Execution Level=1
@@ -57,7 +57,7 @@ Watch 12=
 Watch 13=
 Watch 14=
 [Syntax]
-Commands=SETTINGS,CHECKSETTINGS,OPEN_WSL
+Commands=SETTINGS,CHECKSETTINGS,OPEN_WSL,DIALOGSTATE,CHECKMAIN
 Functions=@CURDIR_WSL
 [Designer]
 CustomColors=2545DE
