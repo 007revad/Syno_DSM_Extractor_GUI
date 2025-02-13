@@ -94,11 +94,6 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
-<p align="center">Enter your Ubuntu password</p>
-<p align="center"><img src="/images/sudo_pwd.png"></p>
-
-<br>
-
 <p align="center">Extracted files</p>
 <p align="center"><img src="/images/extracted.png"></p>
 
