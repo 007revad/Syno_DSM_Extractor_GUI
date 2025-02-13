@@ -96,10 +96,10 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 
 [Files]
 Source: {#MyAppExeName}.exe; DestDir: {app}; Flags: restartreplace uninsrestartdelete promptifolder replacesameversion overwritereadonly uninsremovereadonly
-Source: scripts\sae.py; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
-Source: scripts\syno_archive_extractor.sh; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
-Source: scripts\syno_archive_extractor.txt; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite
-Source: SDE-GUI.ini; DestDir: {localappdata}\{#MyAppPublisher}\{#MyAppFolder}; Flags: comparetimestamp confirmoverwrite
+Source: scripts\sae.py; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
+Source: scripts\syno_archive_extractor.sh; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
+Source: scripts\syno_archive_extractor.txt; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
+Source: SDE-GUI.ini; DestDir: {localappdata}\{#MyAppPublisher}\{#MyAppFolder}; Flags: comparetimestamp confirmoverwrite uninsneveruninstall 
 
 Source: lib\lib*; DestDir: {app}\lib; Flags: restartreplace uninsrestartdelete promptifolder replacesameversion overwritereadonly uninsremovereadonly
 
@@ -153,4 +153,5 @@ Root: HKA; Subkey: "Software\Classes\SDE-GUI.spk\shell\Extract\command"; ValueTy
 
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".pat"; ValueData: ""; Flags: uninsdeletekey
 Root: HKA; Subkey: "Software\Classes\Applications\{#MyAppExeName}.exe\SupportedTypes"; ValueType: string; ValueName: ".spk"; ValueData: ""; Flags: uninsdeletekey
+
 
