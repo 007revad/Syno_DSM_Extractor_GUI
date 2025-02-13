@@ -94,6 +94,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
+<p align="center">Help menu</p>
+<p align="center"><img src="/images/help-menu.png"></p>
+
+<br>
+
 <p align="center">Settings dialog</p>
 <p align="center"><img src="/images/settings.png"></p>
 
