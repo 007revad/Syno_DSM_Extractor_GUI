@@ -79,6 +79,11 @@ The first time you open Syno DSM Extractor GUI (SDE-GUI.exe):
 
 <br>
 
+<p align="center">Ready to extract DSM pat file to same folder</p>
+<p align="center"><img src="/images/gui_same_folder.png"></p>
+
+<br>
+
 <p align="center">Ready to extract package spk file</p>
 <p align="center"><img src="/images/gui-spk.png"></p>
 
