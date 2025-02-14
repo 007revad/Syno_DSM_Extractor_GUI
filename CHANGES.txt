@@ -1,7 +1,7 @@
 v1.3.1.35
 - Changed to auto close the WSL window if there were no errors and "Show WSL window" is not ticked.
 - Removed "Do you want to close WSL window" prompt.
-- Updated the installer's Getting Started page to show cmd or create sde folders.
+- Updated the installer's Getting Started page to show the command or create the sde folders.
 - Bug fix for needing to click [X] button twice to close app after About dialog was show and closed.
 - Bug fix for app not closing when clicking [X] if Settings or About dialogs are open.
 
