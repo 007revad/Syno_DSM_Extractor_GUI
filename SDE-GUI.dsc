@@ -8,11 +8,16 @@
 # To Do
 # Add menu to install WSL (wsl --install in PowerShell admin mode) or install WSL during SDE-GUI installation.
 # Cleanup files in U:\home\dave\sde\in if error.
-# Finish "Show WSL window" menu tickbox so WSL window is hidden if tickbox not ticked.
 #
-# Change to show pat/spk source folder as target when move = 1
 #
 # Done
+# Changed to auto close the WSL window if there were no errors and "Show WSL window" is not ticked.
+# Removed "Do you want to close WSL window" prompt.
+# Updated the installer's Getting Started page to show cmd or create sde folders.
+# Bug fix for needing to click [X] twice to close app after About dialog was show and closed.
+# Bug fix for app not closing when clicking [X] if Settings or About dialogs are open.
+#
+# Changed to show pat/spk source folder as target when "Extract to same folder" enaboled.
 # Moved "Extract to same folder as pat/spk file" checkbox to main window.
 # Added View Log menu (in Help menu).
 # Added setting to check for newer version when opening Syno DSM Extractor GUI.
@@ -38,8 +43,12 @@
 # Changes to send %1 to open SDE-GUI window if already open.
 
 
-# test file
-#%1 = F:\extracted\synology_v1000_1821+.pat
+# For testing in the IDE
+if @sysinfo(inide) 
+  if @file(F:\extracted\synology_v1000_1821+.pat)
+#    %1 = F:\extracted\synology_v1000_1821+.pat
+  end
+end
 
 
   #define function,curdir_wsl
@@ -194,7 +203,9 @@
     if @not(@null(%%powershell))
       runh %%powershell get-psdrive -psprovider filesystem | findstr "Ubuntu", pipe
       %%driveletter = @substr(@trim(@pipe()),1)
+      inifile open, %%inifile
       inifile write,main,drive,@upper(%%driveletter)
+      inifile close
     end
   end
 
@@ -216,7 +227,6 @@
   DIALOG ADD,MENU,Settings,Settings|-|Install Scripts|Install Libraries
   DIALOG ADD,MENU,Help,ViewLogMENU:View Log|Show WSL window|-|Check for Updates|About
   DIALOG ADD,TEXT,TEXT1,20,18,50,18,In File
-  #DIALOG ADD,EDIT,EDIT1,18,75,385,18,%%file_in,,READONLY
   DIALOG ADD,EDIT,EDIT1,18,75,385,18,,,READONLY
   DIALOG ADD,BUTTON,Select,15,468,70,24,Select File
   DIALOG ADD,TEXT,TEXT2,60,18,50,18,Out Path
@@ -237,20 +247,23 @@
     window ontop,#%%MainClass
   end
 
+  inifile close
+
   CheckMain
 
 
 :EvLoop
-  if @not(@winexists(#SDEset))
+  if @both(@not(@winexists(#SDEset)),@not(@winexists(#SDEabout)))
     CheckSettings
     if @unequal(%%closechild,1)
       DialogState
     end
   end
-#  wait event, 0.2
   wait event
   # %V is event, %W is dialog number that issued it (0,1,2,etc.)
   parse "%V;%W", @event(D) 
+
+  # Close settings dialog
   if @both(@equal(%V,CLOSE),@winexists(#SDEset))
     if @null(%%sdeuser) @null(%%driveletter)
       # Exit app if Ubuntu user or drive letter blank and [x] button clicked
@@ -260,6 +273,22 @@
       %%closechild = 1
     end
   end
+
+  # Close about dialog
+  if @winexists(#SDEabout))
+    if @equal(%V,CLOSE) @equal(%V,ABOUTOKBUTTON)
+      %%closechild = 1
+    end
+  end
+
+  # Close main dialog
+  if @both(@not(@winexists(#SDEset)),@not(@winexists(#SDEabout)))
+    %%closechild =
+  end
+  if @equal(%W,0)
+    %%closechild =
+  end
+
   dialog select, %W 
   goto %V 
 
@@ -270,7 +299,8 @@
   goto EvLoop 
 
 :DialogState
-  if @both( @not(@winexists(#SDEset)),@not(@winexists(#SDEabout)) )
+  if @both(@not(@winexists(#SDEset)),@not(@winexists(#SDEabout)))
+    inifile open, %%inifile
     # Extract Button
     %%file_in = @dlgtext(EDIT1)
     %%ext_in = @ext(%%file_in)
@@ -283,20 +313,11 @@
     if @equal(%%ext_in,pat) @equal(%%ext_in,spk)
       if @both(@not(@null(%%sdeuser)),@not(@null(%%driveletter)))
         dialog enable, Extract
-        #if @unequal(@focus(),CHECKmain)
-        #  dialog focus, Extract
-        #end
       else
         dialog disable, Extract
-        #if @unequal(@focus(),CHECKmain)
-        #  dialog focus, Select
-        #end
       end
     else
       dialog disable, Extract
-      #if @unequal(@focus(),CHECKmain)
-      #  dialog focus, Select
-      #end
     end
 
     # View Log
@@ -306,22 +327,13 @@
     else
       dialog disable, ViewLogMENU
     end
-
-    # Extract To
-#    if @equal(@iniread(main, move),1)
-#      dialog disable, Target
-#      dialog disable, EDIT2
-#      dialog disable, TEXT2
-#    else
-#      dialog enable, Target
-#      dialog enable, EDIT2
-#      dialog enable, TEXT2
-#    end
+    inifile close
   end
   exit
 
 
 :Close
+:AboutOKBUTTON
   if @null(%%closechild)
     inifile close, %%inifile
     stop
@@ -343,11 +355,7 @@
   DIALOG ADD,TEXT,Copyright,66,70,,,%%Copyright 007revad
   DIALOG ADD,EXTTEXT,EXTTEXT1,86,70,,,<A HREF="https://www.github.com/007revad/Syno_DSM_Extractor_GUI">https://www.github.com/007revad/Syno_DSM_Extractor_GUI</A>
   DIALOG ADD,BUTTON,AboutOK,117,190,64,24,OK
-  DIALOG SHOWMODAL
-:AboutOKBUTTON
-  %%closechild = 1
-  while @event()
-  wend
+  DIALOG SHOW
   goto EvLoop
 
 
@@ -375,12 +383,12 @@
   goto EvLoop
 
 :CheckMain
+  inifile open, %%inifile
   # Move unpacked files
   %%move = @dlgtext(CHECKmain) 
   if @unequal(%%move,@iniread(main, move))
     inifile write,main,move,%%move
   end
-#  %%current_target = @dlgtext(EDIT1)
   %f = @dlgtext(EDIT1)
   %p = @substr(@path(%f),1,-1)
   %s = @iniread(main, saveto)
@@ -392,7 +400,7 @@
     end
   end
 
-  # Extract To set
+  # Extract To ticked
   if @equal(@iniread(main, move),1)
     dialog disable, Target
     dialog disable, EDIT2
@@ -402,6 +410,7 @@
     dialog enable, EDIT2
     dialog enable, TEXT2
   end
+  inifile close
   exit
 
 
@@ -414,6 +423,7 @@
   #----------------------------------------------------------------------------
   # Check Settings command
   #----------------------------------------------------------------------------
+  inifile open, %%inifile
   # Show settings dialog if user or drive letter not set
   %%sdeuser = @iniread(main, user)
   %%driveletter = @iniread(main, drive)
@@ -428,6 +438,7 @@
     info You need to set Ubuntu drive letter ,
     Settings
   end
+  inifile close
   exit
 
 
@@ -435,14 +446,15 @@
   #----------------------------------------------------------------------------
   # Settings command
   #----------------------------------------------------------------------------
+  inifile open, %%inifile
   %%sdeuser = @iniread(main, user)
   %s = @iniread(main, pass)
   if @not(@null(%s))
     %%sdepass = @encrypt(%s, 8027609167)
   end
   %%driveletter = @iniread(main, drive)
-#  %%move = @iniread(main, move,1)
   %%updates = @iniread(main, updates,1)
+  inifile close
 
   DIALOG CREATE,Settings,-1,0,245,270,CLASS SDEset,NOMIN,ONTOP
   # User
@@ -458,8 +470,6 @@
   DIALOG ADD,EDIT,NDrive,76,140,84,18,,Enter Ubuntu's drive letter
   DIALOG SET,NDrive,%%driveletter
   DIALOG ADD,BITMAP,BITMAP1,105,20,203,59,#drive-letter.bmp
-#  # Move
-#  DIALOG ADD,CHECK,CHECK1,181,20,210,18,Extract to same folder as pat/spk file,%%move
   # Check for updates
   DIALOG ADD,CHECK,CHECK1,181,20,210,18,Check for updates when opening,%%updates
   DIALOG ADD,BUTTON,Save,222,90,64,24,Save
@@ -469,11 +479,11 @@
 
 
 :SaveBUTTON
+  inifile open, %%inifile
   %%newuser = @dlgtext(NUser)
   %%newpass = @dlgtext(NPwd)
   %%newdrive = @dlgtext(NDrive)
-#  %%newmove = @dlgtext(CHECK1) 
-  %%newupdates = @dlgtext(CHECK1) 
+  %%newupdates = @dlgtext(CHECK1)
   # User name
   if @not(@null(%%newuser))
     if @unequal(%%sdeuser,%%newuser)
@@ -492,13 +502,12 @@
       inifile write,main,drive,@upper(%%newdrive)
     end
   end
-#  # Move unpacked files
-#  inifile write,main,move,%%newmove
   # Check for updates
   inifile write,main,updates,%%newupdates
   dialog close
   while @event()
   wend
+  inifile close
   goto EvLoop
 
 
@@ -535,7 +544,9 @@
   %p = @dirdlg(Select folder,%%out_path,shownewfolderbutton)
   if @ok()
     %%out_path = %p
+    inifile open, %%inifile
     inifile write,main,saveto,%%out_path
+    inifile close
     dialog set,EDIT2,%%out_path
   end
   goto Timer
@@ -823,19 +834,9 @@
       dialog set,STATUS1,@tab()No files to extract
     end
 
-#    # Show log
-#    if @file(%%driveletter:\sde\sde.log)
-#      %L = @new(list)
-#      list loadfile,%L,%%driveletter:\sde\sde.log
-#      if @ok()
-#        info @text(%L) ,
-#      end
-#      list close,%L
-#    end
-
     # Exit WSL shell
     if @winexists(%%windowid)
-      if @ask(Do you want to close the wsl window)
+      if @null(@regread(default,,Show WSL window))
         # Need to exit twice as first exit only exits sudo
         # Once to root@... and again to user@...
         #window send,%%windowid,exit@key(ENTER), wait
@@ -846,18 +847,6 @@
         end
       end
     end
-
-
-    #%%pipe = @pipe()
-    #
-    #if @null(%%pipe)
-    #  dialog set, TEXT4, Finished
-    #else
-    #  dialog set, TEXT5, Finished with errors!
-    #  dialog show, TEXT5
-    #  info %%pipe ,
-    #end
-
   end
 
   # Move extracted pat/sdk folder to pat/sdk folder
@@ -870,10 +859,7 @@
     %n = @name(%%file_in)
     if @file(%%driveletter:\sde\out\%n,D)
       directory rename,%%driveletter:\sde\out\%n,%p,CONFIRM,SHOWERRORS 
-      if @ok()
-        # Delete folder in \sde\out\ if it still exists
-        #
-      else
+      if @not(@ok())
         warn Failed to move extracted %n folder! ,
       end
     end
@@ -904,13 +890,13 @@
   if @not(@null(%%powershell))
     %%repo = 007revad/Syno_DSM_Extractor_GUI
     if %%dialogshowing
-      # Set to cursor to wait
+      # Set the cursor to wait
       dialog cursor,wait
     end
     runh cmd /C curl.exe --silent @chr(34)https://api.github.com/repos/%%repo/releases/latest@chr(34) | findstr tag_name, pipe
     %P = @pipe()
     if %%dialogshowing
-      # Set to cursor to normal
+      # Set the cursor to normal
       dialog cursor
     end
     %%dialogshowing =

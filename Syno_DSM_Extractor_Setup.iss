@@ -97,7 +97,9 @@ Name: quicklaunchicon; Description: {cm:CreateQuickLaunchIcon}; GroupDescription
 [Files]
 Source: {#MyAppExeName}.exe; DestDir: {app}; Flags: restartreplace uninsrestartdelete promptifolder replacesameversion overwritereadonly uninsremovereadonly
 Source: scripts\sae.py; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
+Source: scripts\sae.ini; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
 Source: scripts\syno_archive_extractor.sh; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
+Source: scripts\syno_archive_extractor.ini; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
 Source: scripts\syno_archive_extractor.txt; DestDir: {app}\scripts; Flags: comparetimestamp confirmoverwrite promptifolder
 Source: SDE-GUI.ini; DestDir: {localappdata}\{#MyAppPublisher}\{#MyAppFolder}; Flags: comparetimestamp confirmoverwrite uninsneveruninstall 
 
