@@ -6,6 +6,7 @@
 - [Synology recovery](#synology-recovery)
 - [Other Synology scripts](#other-synology-scripts)
 - [Synology hardware restrictions](#synology-hardware-restrictions)
+- [How To Guides](#how-to-guides)
 - [Synology dev](#synology-dev)
 ##
 
@@ -28,6 +29,9 @@
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [Back to Contents](#contents)
 
 ### Synology docker
+
+- **<a href="https://github.com/007revad/Synology_Docker_Export">Synology_Docker_export</a>**
+  - Export all Synology Container Manager or Docker containers' settings as json files to your docker shared folder.
 
 - **<a href="https://github.com/007revad/Synology_ContainerManager_IPv6">Synology_ContainerManager_IPv6</a>**
   - Enable IPv6 for Container Manager's bridge network.
@@ -125,10 +129,20 @@
 
  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [Back to Contents](#contents)
 
+### How To Guides
+
+- **<a href="https://github.com/007revad/Synology_SSH_key_setup">Synology_SSH_key_setup</a>**
+  - How to setup SSH key authentication for your Synology.
+
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; [Back to Contents](#contents)
+
 ### Synology dev
 
 - **<a href="https://github.com/007revad/Download_Synology_Archive">Download_Synology_Archive</a>**
   - Download all or part of the Synology archive.
+
+- **<a href="https://github.com/007revad/Syno_DSM_Extractor_GUI">Syno_DSM_Extractor_GUI</a>**
+  - Windows GUI for extracting Synology DSM 7 pat files and spk package files.
 
 - **<a href="https://github.com/007revad/ScriptNotify">ScriptNotify</a>**
   - DSM 7 package to allow your scripts to send DSM notifications.
