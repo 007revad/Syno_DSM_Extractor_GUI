@@ -1,8 +1,17 @@
+v1.3.2.44
+- Bug fix for double-clicking pat/spk file or using right-click > Extract".
+- Bug fix for "Failed to sudo" when pat or spk file is located on a UNC network path.
+- Bug fix for "Failed to CD to /" when pat or spk file is located on a UNC network path.
+- Bug fix for "Failed to create U:\sde\in" when pat or spk file is located on a UNC network path.
+- Changed to prevent "Failed to move extracted <filename> folder" if user clicked No to overwrite existing folder.
+- Changed to pause for 1 second before closing WSL window so user can see the result.
+- Minor improvements.
+
 v1.3.1.35
 - Changed to auto close the WSL window if there were no errors and "Show WSL window" is not ticked.
 - Removed "Do you want to close WSL window" prompt.
 - Updated the installer's Getting Started page to show the command to create the sde folders.
-- Bug fix for needing to click [X] button twice to close app after About dialog was show and closed.
+- Bug fix for needing to click [X] button twice to close app after About dialog was shown and closed.
 - Bug fix for app not closing when clicking [X] if Settings or About dialogs are open.
 
 v1.3.0.34
