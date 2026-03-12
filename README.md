@@ -37,7 +37,7 @@ You can drag and drop a .pat file or .spk file onto the window, or click the Sel
     - I use the same username and password that I use in Windows, just to make it easier.
 7. Create the sde folders and set the permissions so any user can run Synology DSM Extractor.
     ```
-    sudo mkdir -m 777 -p /sde/in /sde/out /sde/lib
+    sudo mkdir -m 777 -p /sde /sde/in /sde/out /sde/lib
     ```
 8. Open Windows File Explorer then click on Linux, right-click on Ubuntu and select Map network drive...
     <p align="left"><img src="/images/map-step1.png"></p>
