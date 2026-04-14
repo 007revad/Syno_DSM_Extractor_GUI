@@ -13,5 +13,3 @@ Stats at https://hanadigital.github.io/grev/
 | Asustor Open Speedtest | [![Github Releases](https://img.shields.io/github/downloads/007revad/Asustor_Open_Speedtest/total.svg)](https://github.com/007revad/Asustor_Open_Speedtest/releases) | [Download stats](https://hanadigital.github.io/grev/007revad/Asustor_Open_Speedtest) |
 | Asustor Libre Speedtest | [![Github Releases](https://img.shields.io/github/downloads/007revad/Asustor_Libre_Speedtest/total.svg)](https://github.com/007revad/Asustor_Libre_Speedtest/releases) | [Download stats](https://hanadigital.github.io/grev/007revad/Asustor_Libre_Speedtest) |
 | Download Station Chrome Extension | [![Github Releases](https://img.shields.io/github/downloads/007revad/Synology_Download_Station_Chrome_Extension/total.svg)](https://github.com/007revad/Synology_Download_Station_Chrome_Extension/releases) | [Download stats](https://hanadigital.github.io/grev/007revad/Synology_Download_Station_Chrome_Extension) |
-
-
